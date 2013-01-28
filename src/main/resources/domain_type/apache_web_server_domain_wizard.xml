@@ -1,0 +1,99 @@
+<wizard class="com.datasynapse.fabric.propertysheet.wizard.DomainWizard">
+
+    <import package="com.datasynapse.fabric.propertysheet.wizard" />
+    <import package="com.datasynapse.fabric.util.converter" />
+    <import package="com.datasynapse.fabric.util.filter" />
+    <import package="com.datasynapse.fabric.ui.handler" />
+
+    <property name="name" value="Apache Web Server" />
+    <property name="description" value="A wizard to create Apache Web Server Application Components." />
+    <property name="action" value="/livecluster/domainWizard.do" />
+    <property name="addParamURL" value="?type=ApacheWebServer" />
+
+    <beanObject name="DomainStub" class="DomainStub" />
+
+    <menuPageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="menu" />
+        <property name="pageFileUri" value="gridlib://apache-container:3.0/wizard_pages/apacheMenuPage.xml" />
+    </menuPageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="domainCreation" />
+        <property name="pageFileUri" value="system:///domainPages/domainCreationPage.xml" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="features" />
+        <property name="pageFileUri" value="system:///domainPages/featuresPage.xml" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="options" />
+        <property name="pageFileUri" value="system:///domainPages/optionsPage.xml" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="fileArchive" />
+        <property name="pageFileUri" value="system:///domainPages/fileArchivePage.xml" />
+        <filter class="AdvancedFeatureFilter">
+        	<property name="requiredFeatures" value="File Archive Support"/>
+        	<property name="prohibitedFeatures" value="Clustered Managed Server Support"/>        	
+        </filter>
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="urlPattern" />
+        <property name="pageFileUri" value="system:///domainPages/urlPatternPage.xml" />
+        <property name="finishable" value="true" />
+        <filter class="AdvancedFeatureFilter">
+			<property name="requiredFeatures" value="Http Support"/>
+			<property name="prohibitedFeatures" value="Clustered Admin Server Support"/>	
+        </filter>
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="logFilePattern" />
+        <property name="pageFileUri" value="system:///domainPages/logFilePatternPage.xml" />
+        <property name="finishable" value="true" />
+        <filter class="DomainSupportsFeatureFilter">
+            <property name="featureNames" value="Application Logging Support" />
+        </filter>
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="defaultSettings" />
+        <property name="pageFileUri" value="system:///domainPages/defaultSettingsPage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="allocationConstraint" />
+        <property name="pageFileUri" value="system:///domainPages/allocationConstraintPage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="statistics" />
+        <property name="pageFileUri" value="system:///domainPages/statisticsPage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="defaultRuleSettings" />
+        <property name="pageFileUri" value="system:///domainPages/defaultRuleSettingsPage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="containerContextVariable" />
+        <property name="pageFileUri" value="system:///domainPages/containerContextVariablePage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="configFile" />
+        <property name="pageFileUri" value="system:///domainPages/configFilePage.xml" />
+        <property name="finishable" value="true" />
+    </pageInfo>
+    
+</wizard>

@@ -1,0 +1,123 @@
+<page class="com.datasynapse.fabric.propertysheet.wizard.BasicWizardPage" name="ApacheMenuPage">
+
+	<import package="com.datasynapse.fabric.propertysheet"/>
+
+	<property name="description" value="I would like to:"/>
+	
+	<section class="BasicVelocitySection">
+		<property name="type" value="menu"/>	
+		<velocityTemplate>
+			<![CDATA[
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=domainCreation" class="fLink">
+					Add/edit Application Component settings
+				</a>
+			</li>		
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=features" class="fLink">
+					Add/edit Application Component features
+				</a>
+			</li>	
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=options" class="fLink">
+					Add/edit Application Component options
+				</a>
+			</li>	
+			]]>			
+		</velocityTemplate>
+	</section>	
+
+	<if cond="${wizard.isFeatureAvailable('File Archive Support')}}">
+		<section class="BasicVelocitySection">
+			<property name="type" value="menu"/>	
+			<velocityTemplate>
+				<![CDATA[
+					<li>
+						<a href="/livecluster/domainWizard.do?pageId=fileArchive" class="fLink">
+							Add/remove archive files
+						</a>
+					</li>				
+				]]>			
+			</velocityTemplate>
+		</section>	
+	</if>
+	
+	<if cond="${wizard.isFeatureAvailable('Http Support') and !wizard.isFeatureAvailable('Clustered Admin Server Support')}">
+		<section class="BasicVelocitySection">
+			<property name="type" value="menu"/>	
+			<velocityTemplate>
+				<![CDATA[
+				<li>
+					<a href="/livecluster/domainWizard.do?pageId=urlPattern" class="fLink">
+						Add/remove URL patterns
+					</a>
+				</li>	
+				]]>			
+			</velocityTemplate>
+		</section>	
+	</if>
+	
+	<if cond="${wizard.isFeatureAvailable('Application Logging Support')}">
+	    <section class="BasicVelocitySection">
+	        <property name="type" value="menu"/>
+	        <velocityTemplate>
+	            <![CDATA[
+	            <li>
+	                <a href="/livecluster/domainWizard.do?pageId=logFilePattern" class="fLink">
+	                    Add/remove log file patterns
+	                </a>
+	            </li>
+	            ]]>
+	        </velocityTemplate>
+	    </section>
+	</if>
+	
+	<section class="BasicVelocitySection">
+		<property name="type" value="menu"/>	
+		<velocityTemplate>
+			<![CDATA[
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=defaultSettings" class="fLink">
+					Add/edit default settings
+				</a>
+			</li>				
+            <li>
+                <a href="/livecluster/domainWizard.do?pageId=allocationConstraint" class="fLink">
+                    Add/remove allocation constraints
+                </a>
+            </li>   
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=statistics" class="fLink">
+					Add/edit tracked statistics
+				</a>
+			</li>	
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=defaultRuleSettings" class="fLink">
+					Add/edit default rule settings
+				</a>
+			</li>				
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=containerContextVariable" class="fLink">
+					Add/override/edit Container and Component-specific runtime context variables
+				</a>
+			</li>	
+			<li>
+				<a href="/livecluster/domainWizard.do?pageId=configFile" class="fLink">
+					Add/override/customize Container and Component-specific config files
+				</a>
+			</li>
+			]]>			
+		</velocityTemplate>
+	</section>	
+
+	<section class="BasicSheet">
+		<property name="beanName" value="${wizard.getDomain().getName()}"/>		
+		<property name="type" value="none"/>
+	</section>	
+
+	<section class="BasicSheet">
+		<property name="beanName" value="${wizard.getDomain().getContainerName()}"/>
+		<property name="type" value="none"/>				
+	</section>	
+	
+</page>

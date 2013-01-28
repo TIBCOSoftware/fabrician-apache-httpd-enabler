@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grid-library>
+    <grid-library-name>apache-container</grid-library-name>
+    <grid-library-version>${version}</grid-library-version>
+
+    <!-- No JRE arguments -->
+
+    <dependency>
+        <grid-library-name>apache-distribution</grid-library-name>
+        <grid-library-version>${distro-version}</grid-library-version>
+    </dependency>
+
+    <!-- No conflicts -->
+
+    <jar-path>
+        <pathelement>ds_jars</pathelement>
+    </jar-path>
+
+    <!-- No library paths -->
+
+    <!-- No assembly paths -->
+
+    <!-- No command paths -->
+
+    <!-- No hooks paths -->
+
+    <!-- No environment variables -->
+
+    <!-- No system properties -->
+
+</grid-library>

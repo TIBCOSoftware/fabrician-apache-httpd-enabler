@@ -1,0 +1,5 @@
+<domainType class="com.datasynapse.fabric.broker.domain.DefaultDomainType">
+	<property name="name" value="Apache Web Server" />
+	<property name="description" value="Application Component Type for creating Apache Web Application Components" /> 
+    <property name="dependentGridLib" value="apache-container"/>
+</domainType>
