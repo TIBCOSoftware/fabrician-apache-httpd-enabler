@@ -28,7 +28,6 @@ The Distribution Grid Library is created by performing the following steps for e
     </grid-library>
 * Create a tar.gz or zip of the contents.
 
-
 Statistics
 --------------------------------------
 * **Total Accesses** - Total requests processed since last started. 
