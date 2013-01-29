@@ -22,10 +22,12 @@ The Distribution Grid Library is created by performing the following steps for e
 * Download and extract the Apache HTTP Server from http://httpd.apache.org/.
 * Rename the root directory to apache2.
 * Create a grid-library.xml file and place it in the apache2 directory.
+```xml
     <grid-library os="linux">
         <grid-library-name>apache-distribution</grid-library-name>
         <grid-library-version>2.2.9</grid-library-version>
     </grid-library>
+```
 * Create a tar.gz or zip of the apache2 directory.
 
 
