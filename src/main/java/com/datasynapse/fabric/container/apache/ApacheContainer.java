@@ -101,7 +101,8 @@ public class ApacheContainer extends ExecContainer {
 		super.doShutdown();
 		String delete = getStringVariableValue("DELETETARGETDIR", "");
    		if (delete.compareToIgnoreCase("true") == 0 ) {
-   			FileUtils.deleteDirectory(new File(getTargetConfigDir()));
+   			File todelete = new File (getStringVariableValue("SERVER_RUNTIME_DIR"));
+   			FileUtils.deleteDirectory(todelete);
     	}		    	
 	}
 
