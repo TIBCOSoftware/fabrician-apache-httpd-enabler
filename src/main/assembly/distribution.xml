@@ -5,13 +5,23 @@
 		<format>tar.gz</format>
 	</formats>
 	<fileSets>
-		<fileSet>
-			<directory>./target</directory>
-			<outputDirectory>deploy/resources/gridlib</outputDirectory>
-			<includes>
-				<include>**/*.zip</include>
-			</includes>
-		</fileSet>
+	    <fileSet>
+	        <directory>src/main/resources</directory>
+            <outputDirectory/>
+	        <excludes>
+	            <exclude>container.xml</exclude>
+	            <exclude>grid-library.xml</exclude>
+	        </excludes>
+	    </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory/>
+            <filtered>true</filtered>
+            <includes>
+                <include>container.xml</include>
+                <include>grid-library.xml</include>
+            </includes>
+        </fileSet>
 	</fileSets>
 </assembly>
 

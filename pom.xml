@@ -3,12 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fabrician.enabler</groupId>
 	<artifactId>apache</artifactId>
-	<name>Apache HTTP Server</name>
-	<packaging>tar.gz</packaging>
+	<name>Apache HTTP Server Enabler</name>
+	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<description></description>
 	<properties>
 	    <fabric-version>5.0.2.7</fabric-version>
+	    <fabric-location>${basedir}/SilverFabricSDK.jar</fabric-location>
 	    <distro-version>2.2.9</distro-version>
 	</properties>
 	<build>
@@ -32,28 +33,27 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
+		
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.2</version>
 				<executions>
 					<execution>
-						<id>container-jar</id>
+						<id>enabler-jar</id>
 						<phase>process-classes</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
 						<inherited>false</inherited>
 						<configuration>
-							<finalName>${artifactId}-container</finalName>
-							<outputDirectory>target/gridlibs/ds_jars</outputDirectory>
-							<includes>
-								<include>com/datasynapse/fabric/container/**</include>
-							</includes>
+							<finalName>${project.artifactId}-enabler</finalName>
+	                        <includes>
+	                            <include>**/*</include>
+	                        </includes>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>  -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -61,7 +61,7 @@
 						<id>distribution</id>
 						<configuration>
                             <descriptors>
-							     <descriptor>distribution.xml</descriptor>
+							     <descriptor>src/main/assembly/distribution.xml</descriptor>
                             </descriptors>
 						</configuration>
 						<phase>package</phase>
@@ -78,7 +78,8 @@
 			<groupId>com.datasynapse.fabricserver</groupId>
 			<artifactId>fabric</artifactId>
 			<version>${fabric-version}</version>
-			<scope>provided</scope>
+			<scope>system</scope>
+			<systemPath>${fabric-location}</systemPath>
 		</dependency>
 	</dependencies>
 </project>
