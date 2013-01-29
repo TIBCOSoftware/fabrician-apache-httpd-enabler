@@ -3,7 +3,7 @@
 
 Introduction
 --------------------------------------
-A Silver Fabric Enabler allows an external application or application platform, such as a J2EE application server to run in a TIBCO Silver® Fabric software environment. The Apache HTTP Server Enabler for Silver Fabric provides integration between Silver Fabric and Apache HTTP Server. The Enabler automatically provisions, orchestrates, controls and manages an Apache HTTP environment. 
+A Silver Fabric Enabler allows an external application or application platform, such as a J2EE application server to run in a TIBCO Silverï¿½ Fabric software environment. The Apache HTTP Server Enabler for Silver Fabric provides integration between Silver Fabric and Apache HTTP Server. The Enabler automatically provisions, orchestrates, controls and manages an Apache HTTP environment. 
 
 Installation
 --------------------------------------
@@ -22,12 +22,14 @@ The Distribution Grid Library is created by performing the following steps for e
 * Download and extract the Apache HTTP Server from http://httpd.apache.org/.
 * Rename the root directory to apache2.
 * Create a grid-library.xml file and place it next to the apache2 directory.
+* Create a tar.gz or zip of the contents.
+
+```XML
     <grid-library os="linux">
         <grid-library-name>apache-distribution</grid-library-name>
         <grid-library-version>2.2.9</grid-library-version>
     </grid-library>
-* Create a tar.gz or zip of the contents.
-
+```
 Statistics
 --------------------------------------
 * **Total Accesses** - Total requests processed since last started. 
