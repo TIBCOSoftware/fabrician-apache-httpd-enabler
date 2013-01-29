@@ -13,29 +13,8 @@
 	    <distro-version>2.2.9</distro-version>
 	</properties>
 	<build>
-		<resources>
-			<resource>
-				<targetPath>../gridlibs</targetPath>
-				<directory>gridlib</directory>
-				<includes>
-					<include>**/container.xml</include>
-					<include>**/grid-library.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<targetPath>../gridlibs</targetPath>
-				<directory>gridlib</directory>
-				<excludes>
-					<exclude>**/container.xml</exclude>
-					<exclude>**/grid-library.xml</exclude>
-				</excludes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
-		
 		<plugins>
-			<!--<plugin>
+		    <plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
@@ -46,14 +25,13 @@
 						</goals>
 						<inherited>false</inherited>
 						<configuration>
-							<finalName>${project.artifactId}-enabler</finalName>
 	                        <includes>
-	                            <include>**/*</include>
+	                            <include>**/*.class</include>
 	                        </includes>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>  -->
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
