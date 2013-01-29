@@ -22,35 +22,52 @@ The Distribution Grid Library is created by performing the following steps for e
 * Download and extract the Apache HTTP Server from http://httpd.apache.org/.
 * Rename the root directory to apache2.
 * Create a grid-library.xml file and place it in the apache2 directory.
-```
     <grid-library os="linux">
         <grid-library-name>apache-distribution</grid-library-name>
         <grid-library-version>2.2.9</grid-library-version>
     </grid-library>
-```
 * Create a tar.gz or zip of the apache2 directory.
+
 
 Statistics
 --------------------------------------
-* Total Accesses - Total requests processed since last started. 
-* Total kBytes - Total amount of data that has been transferred since last started. 
-* Uptime - Total amount of time web server has been running since last started. 
-* Request Per Second - Number of HTTP requests per second the web server processed during last poll interval. 
-* Bytes Per Second - The amount of data the web server is transferring per second during last poll interval. 
-* Bytes Per Request - The average number of bytes being transferred per HTTP request during last poll interval. 
-* Busy Workers - The number of Apache threads actively processing HTTP requests. 
-* Idle Workers - The number of idle Apache threads awaiting HTTP requests. 
-* Idle Workers Percentage - The percentage of idle Apache threads of all Apache threads. 
-* Busy Workers Percentage - The percentage of busy Apache threads of all Apache threads.
+* *Total Accesses* - Total requests processed since last started. 
+* *Total kBytes* - Total amount of data that has been transferred since last started. 
+* *Uptime* - Total amount of time web server has been running since last started. 
+* *Request Per Second* - Number of HTTP requests per second the web server processed during last poll interval. 
+* *Bytes Per Second* - The amount of data the web server is transferring per second during last poll interval. 
+* *Bytes Per Request* - The average number of bytes being transferred per HTTP request during last poll interval. 
+* *Busy Workers* - The number of Apache threads actively processing HTTP requests. 
+* *Idle Workers* - The number of idle Apache threads awaiting HTTP requests. 
+* *Idle Workers Percentage* - The percentage of idle Apache threads of all Apache threads. 
+* *Busy Workers Percentage* - The percentage of busy Apache threads of all Apache threads.
 
 Runtime Context Variables
 --------------------------------------
-* SERVER_RUNTIME_DIR - Work directory containing server configuration, log, and web site files.  Type: Environment, Default value: ${ENGINE_WORK_DIR}/ap
-* LISTEN_PORT - Web Server listening port.  Type: String/Inc, Default value: 8080 
-* LISTEN_PORT_SSL - Web Server SSL listening port.  Type: String/Inc, Default value: 443
-* SERVER_STATUS_PROTOCAL - Protocol used to retrieve server statistics.  Type: String, Default value: http
-* SERVER_STATUS_PATH - URL path to retrieve server statistics.  Type: String, Default value: /server-status
-* SERVER_STATUS_QUERY - Query path to retrieve server statistics.  Type: String, Default value: auto
-* DOCUMENT_ROOT - Web Server document root.  Type: String, Default value: ${SERVER_RUNTIME_DIR}/htdocs
-* FILE_ARCHIVE_DEPLOY_DIRECTORY - Directory to where uploaded application zip file will be unzipped.  Type: String, Default value: ${DOCUMENT_ROOT}
-* DELETETARGETDIR - Delete engine target work directory when deactivating container.  Type: String, Default value: true
+* *SERVER_RUNTIME_DIR* - Work directory containing server configuration, log, and web site files.  
+    * Type: Environment
+    * Default value: ${ENGINE_WORK_DIR}/ap
+* *LISTEN_PORT* - Web Server listening port.  
+    * Type: String/Inc
+    * Default value: 8080 
+* *LISTEN_PORT_SSL* - Web Server SSL listening port.  
+    * Type: String/Inc
+    * Default value: 443
+* *SERVER_STATUS_PROTOCAL* - Protocol used to retrieve server statistics.  
+    * Type: String
+    * Default value: http
+* *SERVER_STATUS_PATH* - URL path to retrieve server statistics.  
+    * Type: String
+    * Default value: /server-status
+* *SERVER_STATUS_QUERY* - Query path to retrieve server statistics.  
+    * Type: String
+    * Default value: auto
+* *DOCUMENT_ROOT* - Web Server document root.  
+    * Type: String
+    * Default value: ${SERVER_RUNTIME_DIR}/htdocs
+* *FILE_ARCHIVE_DEPLOY_DIRECTORY* - Directory to where uploaded application zip file will be unzipped.  
+    * Type: String
+    * Default value: ${DOCUMENT_ROOT}
+* *DELETETARGETDIR* - Delete engine target work directory when deactivating container.  
+    * Type: String
+    * Default value: true
