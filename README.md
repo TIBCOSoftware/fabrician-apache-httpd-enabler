@@ -3,7 +3,7 @@
 
 Introduction
 --------------------------------------
-A Silver Fabric Enabler allows an external application or application platform, such as a J2EE application server to run in a TIBCO Silver� Fabric software environment. The Apache HTTP Server Enabler for Silver Fabric provides integration between Silver Fabric and Apache HTTP Server. The Enabler automatically provisions, orchestrates, controls and manages an Apache HTTP environment. 
+A Silver Fabric Enabler allows an external application or application platform, such as a J2EE application server to run in a TIBCO Silver Fabric software environment. The Apache HTTP Server Enabler for Silver Fabric provides integration between Silver Fabric and Apache HTTP Server. The Enabler automatically provisions, orchestrates, controls and manages an Apache HTTP environment. 
 
 Installation
 --------------------------------------
