@@ -1,4 +1,6 @@
-[fabrician.org](http://fabrician.org/) - Apache HTTP Server Enabler Guide
+[fabrician.org](http://fabrician.org/)
+==========================================================================
+Apache HTTP Server Enabler Guide
 ==========================================================================
 
 Introduction
@@ -15,6 +17,9 @@ Libraries to the SF_HOME/webapps/livecluster/deploy/resources/gridlib directory 
 Runtime Grid Library
 --------------------------------------
 The Enabler Runtime Grid Library is created by building the maven project.
+```bash
+mvn package
+```
 
 Distribution Grid Library
 --------------------------------------
