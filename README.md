@@ -24,7 +24,8 @@ mvn package
 Distribution Grid Library
 --------------------------------------
 The Distribution Grid Library is created by performing the following steps for each platform:
-* Download and extract the Apache HTTP Server from http://httpd.apache.org/.
+* Download and extract the Apache HTTP Server source from http://httpd.apache.org/.
+* Build the binaries according the Apache HTTP Server instructions.
 * Rename the root directory to apache2.
 * Create a grid-library.xml file and place it next to the apache2 directory.
 * Create a tar.gz or zip of the contents.
