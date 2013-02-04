@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.datasynapse.commons.util.FileUtils;
 import com.datasynapse.commons.util.HostUtils;
+import com.datasynapse.commons.util.LogUtils;
 import com.datasynapse.fabric.common.ActivationInfo;
 import com.datasynapse.fabric.container.ExecContainer;
 import com.datasynapse.fabric.container.Feature;
@@ -22,12 +23,15 @@ public class ApacheContainer extends ExecContainer {
 	private static final long serialVersionUID = -4671237224306339437L;
 	private HttpFeatureInfo _httpFeatureInfo;
 	private URL _staturl;
+	
+	private transient java.util.logging.Logger engineLogger;
 
 	/**
 	 * Constructor.
 	 */
 	public ApacheContainer() {
 		super();
+		engineLogger = LogUtils.forObject(this);
 	}
 	
 	/* (non-Javadoc)
@@ -42,7 +46,9 @@ public class ApacheContainer extends ExecContainer {
      * @see com.datasynapse.fabric.container.ExecContainer#doStart()
      */
     protected void doStart() throws Exception {
-    	File dir = new File(getStringVariableValue("DISTRIBUTION_GRIDLIB_DIR"));
+    	//File dir = new File(getStringVariableValue("DISTRIBUTION_GRIDLIB_DIR"));
+    	//not sure what else this would be
+    	File dir = new File(getStringVariableValue("SERVER_RUNTIME_DIR"));
         updatePermissions(dir);
         
         // create save the url object to be used by conditions and stat providers
@@ -52,6 +58,7 @@ public class ApacheContainer extends ExecContainer {
 		String query = getStringVariableValue("SERVER_STATUS_QUERY");
 		URI uri = new URI(protocal, null, "localhost", port, path, query, null);;
 		_staturl = uri.toURL();
+		engineLogger.fine("Statistics URL: " + _staturl);
 		
         super.doStart();
    	}
@@ -101,7 +108,7 @@ public class ApacheContainer extends ExecContainer {
 		super.doShutdown();
 		String delete = getStringVariableValue("DELETETARGETDIR", "");
    		if (delete.compareToIgnoreCase("true") == 0 ) {
-   			File todelete = new File (getStringVariableValue("SERVER_RUNTIME_DIR"));
+   			File todelete = new File (getStringVariableValue("SERVER_RUNTIME_DIR")); 			
    			FileUtils.deleteDirectory(todelete);
     	}		    	
 	}

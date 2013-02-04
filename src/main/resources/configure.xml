@@ -1,0 +1,13 @@
+<containerConfig name="Apache Web Server 2.2.23 Container - version 1.0">
+    
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf" include="httpd.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+        <regex pattern='Listen 80' replacement='Listen ${LISTEN_PORT}'/>
+        <!-- <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${SERVER_NAME}:${LISTEN_PORT}'/> -->
+        <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${HostUtils.getFQHostname()}:${LISTEN_PORT}'/>
+    </configFiles>
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-info.conf">
+        <regex pattern='\.example\.com' replacement='ServerName ${HostUtils.getFQHostname()} localhost'/>       
+    </configFiles>
+
+</containerConfig>
