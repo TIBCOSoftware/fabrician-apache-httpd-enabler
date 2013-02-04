@@ -8,7 +8,7 @@
 	<import package="com.datasynapse.fabric.stats.provider"/>	
 	<import package="com.datasynapse.fabric.container.apache"/>
 	
-	<property name="targetConfigDir" value="${SERVER_RUNTIME_DIR}"/>
+	<!-- <property name="targetConfigDir" value="${SERVER_RUNTIME_DIR}"/> -->
 	<property name="blocking" value="False"/>
 	<property name="distributionVersion" value="${distro-version}"/>
 	<property name="supportedDomainType" value="Apache Web Server"/>
@@ -19,13 +19,13 @@
 	<property name="modified" value="False"/>
 	
 	<unixcommand class="com.datasynapse.fabric.container.LifecycleCommand">
-		<property name="startupCommand" value="${SERVER_RUNTIME_DIR}/container.sh start"/>
-		<property name="shutdownCommand" value="${SERVER_RUNTIME_DIR}/container.sh stop"/>
+		<property name="startupCommand" value="${CONTAINER_WORK_DIR}/container.sh start"/>
+		<property name="shutdownCommand" value="${CONTAINER_WORK_DIR}/container.sh stop"/>
 	</unixcommand>
 
 	<windowscommand class="com.datasynapse.fabric.container.LifecycleCommand">		
-		<property name="startupCommand" value='"${SERVER_RUNTIME_DIR}/container.cmd" start'/>
-		<property name="shutdownCommand" value='"${SERVER_RUNTIME_DIR}/container.cmd" stop'/>
+		<property name="startupCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" start'/>
+		<property name="shutdownCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" stop'/>
 	</windowscommand>
 
     <startCondition class="ApacheStartCondition">
@@ -39,7 +39,7 @@
 		<variable class="RuntimeContextVariable">
 			<property name="name" value="SERVER_RUNTIME_DIR"/>
 			<property name="autoIncrementType" value="None"/>
-			<property name="value" value="${ENGINE_WORK_DIR}/ap"/>
+			<property name="value" value="${ENGINE_WORK_DIR}/fabric/apache2"/>
 			<property name="type" value="Environment"/>
 			<property name="description" value="Work directory containing server configuration, log, and web site files"/>
 		</variable>
@@ -57,6 +57,12 @@
 			<property name="autoIncrementType" value="Numeric"/>
 			<property name="description" value="Web Server SSL listening port"/>			
 		</variable>		
+        <variable class="RuntimeContextVariable">
+            <property name="name" value="SERVER_NAME"/>
+            <property name="value" value="egoodman-oel63.na.tibco.com"/>
+            <property name="type" value="String"/>  
+            <property name="description" value="Server Name"/>      
+        </variable>                                                     
 		<variable class="RuntimeContextVariable">
 			<property name="name" value="SERVER_STATUS_PROTOCAL"/>
 			<property name="value" value="http"/>
@@ -88,7 +94,7 @@
 			<property name="description" value="Directory to where uploaded application zip file will be unzipped"/>		
 		</variable>
 		<variable class="com.datasynapse.fabric.common.RuntimeContextVariable">
-			<property name="value" value="true"/>
+			<property name="value" value="false"/>
 			<property name="autoIncrementType" value="None"/>
 			<property name="type" value="String"/>
 			<property name="description" value="Delete engine target work directory when deactivating container"/>

@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fabrician.enabler</groupId>
-	<artifactId>apache</artifactId>
+	<artifactId>apache-container</artifactId>
 	<name>Apache HTTP Server Enabler</name>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -10,10 +10,20 @@
 	<properties>
 	    <fabric-version>5.0.2.7</fabric-version>
 	    <fabric-location>${basedir}/SilverFabricSDK.jar</fabric-location>
-	    <distro-version>2.2.9</distro-version>
+	    <distro-version>2.2.23</distro-version>
 	</properties>
 	<build>
 		<plugins>
+		    <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <debug>true</debug>      
+                </configuration>
+            </plugin>		
 		    <plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>

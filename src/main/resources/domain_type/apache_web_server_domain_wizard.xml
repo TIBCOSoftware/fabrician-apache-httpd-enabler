@@ -14,7 +14,7 @@
 
     <menuPageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
         <property name="pageId" value="menu" />
-        <property name="pageFileUri" value="gridlib://apache-container:3.0/wizard_pages/apacheMenuPage.xml" />
+        <property name="pageFileUri" value="gridlib://apache-container/wizard_pages/apacheMenuPage.xml" />
     </menuPageInfo>
 
     <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
@@ -92,7 +92,7 @@
 
     <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
         <property name="pageId" value="configFile" />
-        <property name="pageFileUri" value="system:///domainPages/configFilePage.xml" />
+        <property name="pageFileUri" value="system:///domainPages/contentFilePage.xml" />
         <property name="finishable" value="true" />
     </pageInfo>
     
