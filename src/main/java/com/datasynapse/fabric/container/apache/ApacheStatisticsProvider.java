@@ -87,12 +87,11 @@ public class ApacheStatisticsProvider extends AbstractStatisticsProvider {
 			// add additional calculated values
 			int busyworkers = ((Double)stats.get(BUSY_WORKERS)).intValue();
 			int idleworkers = ((Double)stats.get(IDLE_WORKERS)).intValue();
-			//total bytes apparently not available with apache 2.2.23
-            //double kbytes = ((Double)stats.get(TOTAL_KBYTES)).doubleValue();
+            double kbytes = ((Double)stats.get(TOTAL_KBYTES)).doubleValue();
 			int totalworkers = busyworkers + idleworkers;
 			stats.put(IDLE_PERCENT, new Double(idleworkers*100/totalworkers));
 			stats.put(BUSY_PERCENT, new Double(busyworkers*100/totalworkers));
-            //stats.put(TOTAL_BYTES, new Double(kbytes * 1024));
+            stats.put(TOTAL_BYTES, new Double(kbytes * 1024));
 		} catch (IOException e) {
 			logger.warning("Failed to read server status");
 		} finally {
