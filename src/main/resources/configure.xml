@@ -7,7 +7,8 @@
         <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${HostUtils.getFQHostname()}:${LISTEN_PORT}'/>
     </configFiles>
     <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-info.conf">
-        <regex pattern='\.example\.com' replacement='ServerName ${HostUtils.getFQHostname()} localhost'/>       
+        <regex pattern='\.example\.com' replacement='ServerName ${HostUtils.getFQHostname()} localhost'/>
+        <regex pattern='#ExtendedStatus On' replacement='ExtendedStatus On'/>   
     </configFiles>
 
 </containerConfig>
