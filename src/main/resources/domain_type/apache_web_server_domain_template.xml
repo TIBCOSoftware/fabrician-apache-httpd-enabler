@@ -3,4 +3,5 @@
 	<featureInfo class="com.datasynapse.fabric.domain.featureinfo.HttpFeatureInfo"/>
 	<featureInfo class="com.datasynapse.fabric.domain.featureinfo.FileArchiveFeatureInfo"/>
 	<featureInfo class="com.datasynapse.fabric.container.apache.ApacheApplicationLoggingInfo"/>	
+	<property name="trackedStatistics" value="Busy Workers,Busy Workers Percentage,Bytes Per Request,Bytes Per Second,Idle Workers,Idle Workers Percentage,Request Per Second,Total Accesses,Total kBytes,Uptime"/>
 </domain>

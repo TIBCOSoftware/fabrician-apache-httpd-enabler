@@ -57,12 +57,6 @@
 			<property name="autoIncrementType" value="Numeric"/>
 			<property name="description" value="Web Server SSL listening port"/>			
 		</variable>		
-        <variable class="RuntimeContextVariable">
-            <property name="name" value="SERVER_NAME"/>
-            <property name="value" value="egoodman-oel63.na.tibco.com"/>
-            <property name="type" value="String"/>  
-            <property name="description" value="Server Name"/>      
-        </variable>                                                     
 		<variable class="RuntimeContextVariable">
 			<property name="name" value="SERVER_STATUS_PROTOCAL"/>
 			<property name="value" value="http"/>

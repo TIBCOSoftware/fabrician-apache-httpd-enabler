@@ -52,17 +52,17 @@ Statistics
 Runtime Context Variables
 --------------------------------------
 * **SERVER_RUNTIME_DIR** - Work directory containing server configuration, log, and web site files.  
+Note: when you build apache from source and configure with a prefix of say /usr/local/apache2, that 
+prefix will be replaced with SERVER_RUNTIME_DIR (see configure.xml) in the distribution configuration files.
+Therefore that directory is the Apache ServerRoot and DocumentRoot will be ${SERVER_RUNTIME_DIR}/htdocs.
     * Type: Environment
-    * Default value: ${ENGINE_WORK_DIR}/ap
+    * Default value: ${ENGINE_WORK_DIR}/fabric/apache2
 * **LISTEN_PORT** - Web Server listening port.  
     * Type: String/Inc
     * Default value: 8080 
-* **LISTEN_PORT_SSL** - Web Server SSL listening port.  
+* **LISTEN_PORT_SSL** - Web Server SSL listening port.  Note: your distribution must be setup for SSL
     * Type: String/Inc
     * Default value: 443
-* **SERVER_STATUS_PROTOCAL** - Protocol used to retrieve server statistics.  
-    * Type: String
-    * Default value: http
 * **SERVER_STATUS_PATH** - URL path to retrieve server statistics.  
     * Type: String
     * Default value: /server-status

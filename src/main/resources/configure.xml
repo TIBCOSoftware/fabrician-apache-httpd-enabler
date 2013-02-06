@@ -3,12 +3,40 @@
     <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf" include="httpd.conf">
         <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
         <regex pattern='Listen 80' replacement='Listen ${LISTEN_PORT}'/>
-        <!-- <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${SERVER_NAME}:${LISTEN_PORT}'/> -->
         <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${HostUtils.getFQHostname()}:${LISTEN_PORT}'/>
+        <!-- for ssl support need setup ssl with /usr/local/apache2/conf/server.crt and server.key
+        <regex pattern='#Include conf\/extra\/httpd-ssl.conf' replacement='Include conf/extra/httpd-ssl.conf'/> 
+        -->
     </configFiles>
+<!--     
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-ssl.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+        <regex pattern='Listen 443' replacement='Listen ${LISTEN_PORT_SSL}'/>
+        <regex pattern='VirtualHost _default_:443' replacement='VirtualHost _default_:${LISTEN_PORT_SSL}'/>
+        <regex pattern='ServerName www.example.com:443' remplacement='ServerName ${HostUtils.getFQHostname()}:${LISTEN_PORT_SSL}'/>
+    </configFiles>
+ -->    
     <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-info.conf">
-        <regex pattern='\.example\.com' replacement='ServerName ${HostUtils.getFQHostname()} localhost'/>
+        <regex pattern='Location \/server-status' replacement='Location ${SERVER_STATUS_PATH}'/>
+        <regex pattern='\.example\.com' replacement='${HostUtils.getFQHostname()} localhost'/>
         <regex pattern='#ExtendedStatus On' replacement='ExtendedStatus On'/>   
     </configFiles>
-
+    
+<!-- Uncomment to configure addition httpd features
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-autoindex.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+    </configFiles>
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-multilang-errordoc.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+    </configFiles>
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-manual.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+    </configFiles>
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-vhosts.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+    </configFiles>
+    <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf/extra" include="httpd-dav.conf">
+        <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
+    </configFiles>
+ -->
 </containerConfig>
