@@ -76,14 +76,8 @@
 			<property name="description" value="Query path to retrieve server statistics"/>		
 		</variable>
 		<variable class="RuntimeContextVariable">
-			<property name="name" value="DOCUMENT_ROOT"/>
-			<property name="value" value="${SERVER_RUNTIME_DIR}/htdocs"/>
-			<property name="type" value="String"/>
-			<property name="description" value="Web Server document root"/>		
-		</variable>
-		<variable class="RuntimeContextVariable">
 			<property name="name" value="FILE_ARCHIVE_DEPLOY_DIRECTORY"/>
-			<property name="value" value="${DOCUMENT_ROOT}"/>
+			<property name="value" value="${SERVER_RUNTIME_DIR}/htdocs"/>
 			<property name="type" value="String"/>
 			<property name="description" value="Directory to where uploaded application zip file will be unzipped"/>		
 		</variable>

@@ -71,7 +71,7 @@ Therefore Apache ServerRoot will be ${SERVER_RUNTIME_DIR} and DocumentRoot will 
     * Default value: auto
 * **FILE_ARCHIVE_DEPLOY_DIRECTORY** - Directory to where uploaded application zip file will be unzipped.  
     * Type: String
-    * Default value: ${DOCUMENT_ROOT}
+    * Default value: ${SERVER_RUNTIME_DIR}/htdocs
 * **DELETETARGETDIR** - Delete engine target work directory when deactivating container.  
     * Type: String
     * Default value: true
