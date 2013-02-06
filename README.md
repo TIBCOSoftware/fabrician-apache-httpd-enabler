@@ -53,7 +53,7 @@ Runtime Context Variables
 --------------------------------------
 * **SERVER_RUNTIME_DIR** - Work directory containing server configuration, log, and web site files.  
 Note: when you build apache from source and configure with a prefix of say /usr/local/apache2, that 
-prefix will be replaced with SERVER_RUNTIME_DIR (see configure.xml) in the distribution configuration files.
+prefix will be replaced with ${SERVER_RUNTIME_DIR} in the distribution configuration files (see configure.xml).
 Therefore Apache ServerRoot will be ${SERVER_RUNTIME_DIR} and DocumentRoot will be ${SERVER_RUNTIME_DIR}/htdocs.
     * Type: Environment
     * Default value: ${ENGINE_WORK_DIR}/fabric/apache2
