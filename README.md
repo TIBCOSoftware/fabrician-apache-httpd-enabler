@@ -69,9 +69,6 @@ Therefore Apache ServerRoot will be ${SERVER_RUNTIME_DIR} and DocumentRoot will 
 * **SERVER_STATUS_QUERY** - Query path to retrieve server statistics.  
     * Type: String
     * Default value: auto
-* **DOCUMENT_ROOT** - Web Server document root.  
-    * Type: String
-    * Default value: ${SERVER_RUNTIME_DIR}/htdocs
 * **FILE_ARCHIVE_DEPLOY_DIRECTORY** - Directory to where uploaded application zip file will be unzipped.  
     * Type: String
     * Default value: ${DOCUMENT_ROOT}
