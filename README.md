@@ -60,7 +60,7 @@ Therefore Apache ServerRoot will be ${SERVER_RUNTIME_DIR} and DocumentRoot will 
 * **LISTEN_PORT** - Web Server listening port.  
     * Type: String/Inc
     * Default value: 8080 
-* **LISTEN_PORT_SSL** - Web Server SSL listening port.  Note: your distribution must be setup for SSL
+* **LISTEN_PORT_SSL** - Web Server SSL listening port.  Note: your distribution must be setup for SSL, othewise ignore this.
     * Type: String/Inc
     * Default value: 443
 * **SERVER_STATUS_PATH** - URL path to retrieve server statistics.  
