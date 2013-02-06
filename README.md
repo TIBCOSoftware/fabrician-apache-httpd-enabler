@@ -54,7 +54,7 @@ Runtime Context Variables
 * **SERVER_RUNTIME_DIR** - Work directory containing server configuration, log, and web site files.  
 Note: when you build apache from source and configure with a prefix of say /usr/local/apache2, that 
 prefix will be replaced with SERVER_RUNTIME_DIR (see configure.xml) in the distribution configuration files.
-Therefore that directory is the Apache ServerRoot and DocumentRoot will be ${SERVER_RUNTIME_DIR}/htdocs.
+Therefore Apache ServerRoot will be ${SERVER_RUNTIME_DIR} and DocumentRoot will be ${SERVER_RUNTIME_DIR}/htdocs.
     * Type: Environment
     * Default value: ${ENGINE_WORK_DIR}/fabric/apache2
 * **LISTEN_PORT** - Web Server listening port.  
