@@ -16,7 +16,9 @@ Libraries to the SF_HOME/webapps/livecluster/deploy/resources/gridlib directory 
 
 Runtime Grid Library
 --------------------------------------
-The Enabler Runtime Grid Library is created by building the maven project.
+The Enabler Runtime Grid Library is created by building the maven project.  The build depends on the
+SilverFabricSDK jar file that is distributed with TIBCO Silver Fabric.  The SilverFabricSDK.jar file needs to
+be referenced in the maven pom.xml or it can be placed in the project root directory.
 ```bash
 mvn package
 ```
