@@ -13,18 +13,19 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import com.datasynapse.commons.util.FileUtils;
-import com.datasynapse.commons.util.HostUtils;
-import com.datasynapse.commons.util.LogUtils;
+import java.util.logging.Logger;
+
 import com.datasynapse.fabric.common.ActivationInfo;
+import com.datasynapse.fabric.container.Container;
 import com.datasynapse.fabric.container.ExecContainer;
 import com.datasynapse.fabric.container.Feature;
 import com.datasynapse.fabric.container.ProcessWrapper;
+import com.datasynapse.fabric.domain.Domain;
+import com.datasynapse.fabric.domain.featureinfo.FeatureInfo;
 import com.datasynapse.fabric.domain.featureinfo.HttpFeatureInfo;
-import com.datasynapse.fabric.util.FeatureUtils;
 
 /**
- * FabricServer container class implementation.
+ * FabricServer apache httpd enabler implementation.
  */
 public class ApacheContainer extends ExecContainer {
 	private static final long serialVersionUID = -4671237224306339437L;
@@ -33,28 +34,17 @@ public class ApacheContainer extends ExecContainer {
 	
 	private transient java.util.logging.Logger engineLogger;
 
-	/**
-	 * Constructor.
-	 */
 	public ApacheContainer() {
 		super();
-		engineLogger = LogUtils.forObject(this);
+		engineLogger = Logger.getLogger(getClass().getSimpleName());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.container.ExecContainer#doInit(java.util.List)
-	 */
 	protected void doInit(List additionalVariables) throws Exception {
 		super.doInit(additionalVariables);
-		// TODO container-specific initialization
 	}
 	
-    /* (non-Javadoc)
-     * @see com.datasynapse.fabric.container.ExecContainer#doStart()
-     */
     protected void doStart() throws Exception {
     	//File dir = new File(getStringVariableValue("DISTRIBUTION_GRIDLIB_DIR"));
-    	//not sure what else this would be
     	File dir = new File(getStringVariableValue("SERVER_RUNTIME_DIR"));
         updatePermissions(dir);
         
@@ -86,11 +76,9 @@ public class ApacheContainer extends ExecContainer {
     	return _staturl;
     }
     
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.container.ExecContainer#doInstall(com.datasynapse.fabric.common.ActivationInfo)
-	 */
 	protected void doInstall(ActivationInfo info) throws Exception {
-		_httpFeatureInfo = (HttpFeatureInfo) FeatureUtils.getFeatureInfo(Feature.HTTP_FEATURE_NAME, this, getCurrentDomain());
+		Feature feature = getFeature(Feature.HTTP_FEATURE_NAME, this);
+		_httpFeatureInfo = (HttpFeatureInfo) getFeatureInfo(feature, getCurrentDomain());
     	if (_httpFeatureInfo.isHttpEnabled()) {
     		info.setProperty(ActivationInfo.HTTP_PORT, getStringVariableValue("LISTEN_PORT"));
     	}
@@ -100,36 +88,57 @@ public class ApacheContainer extends ExecContainer {
         super.doInstall(info);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.container.ExecContainer#doUninstall()
-	 */
 	protected void doUninstall() throws Exception {
 		super.doUninstall();
-		// TODO container-specific uninstallation code
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.container.ExecContainer#doShutdown()
-	 */
 	protected void doShutdown() throws Exception {
 		super.doShutdown();
 		String delete = getStringVariableValue("DELETETARGETDIR", "");
    		if (delete.compareToIgnoreCase("true") == 0 ) {
    			File todelete = new File (getStringVariableValue("SERVER_RUNTIME_DIR")); 			
-   			FileUtils.deleteDirectory(todelete);
+   			if (!todelete.exists()) {
+   				return;
+   			} else {
+   				todelete.delete();
+   			}
     	}		    	
 	}
 
     private void updatePermissions(File rootDir) throws IOException, InterruptedException {
-        if (!HostUtils.isWindows()) {
+        if (!isWindows()) {
             ProcessWrapper perm = new ProcessWrapper(getRuntime(), "chmod -R u+x " + rootDir.getAbsolutePath(), null, rootDir);
             perm.exec();
             perm.waitFor();
         }
     }
 	
-	// TODO: Depending on what your container's needs are, you might
-	// want to override the following additional methods of the
-	// ExecContainer superclass: doStart(), getProcess(), confirmShutdown(),
-	// exec(), getEnvironment(), and shouldCopyConfigFile().
+    public static Feature getFeature(String featureName, Container container) {
+        if (container != null) {
+            for (int i = 0; i < container.getSupportedFeatureCount(); i++) {
+                Feature feature = container.getSupportedFeature(i);
+                if (feature.getName().equalsIgnoreCase(featureName)) {
+                    return feature;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public static FeatureInfo getFeatureInfo(Feature feature, Domain domain) {
+        String infoClassName = feature.getInfoClass();
+        for (int i = 0; i < domain.getFeatureInfoCount(); i++) {
+            FeatureInfo info = domain.getFeatureInfo(i);
+            if (info.getClass().getName().equals(infoClassName)) {
+                return info;
+            }
+        }
+        return null;
+    }
+    
+    public static boolean isWindows() {
+        return System.getProperty("os.name").indexOf("Window") != -1;        
+    }
+
+
 }

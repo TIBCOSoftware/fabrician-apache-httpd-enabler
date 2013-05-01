@@ -25,30 +25,21 @@ import com.datasynapse.fabric.stats.StatisticsMetadata;
 import com.datasynapse.fabric.stats.provider.AbstractStatisticsProvider;
 
 public class ApacheStatisticsProvider extends AbstractStatisticsProvider {
-//	extended status returned by Apache, this is for reference
-//	private static final String TOTAL_ACCESSES = "Total Accesses";
-	private static final String TOTAL_KBYTES = "Total kBytes";
-    private static final String TOTAL_BYTES = "Total Bytes";
-//	private static final String UPTIME = "Uptime";
-//	private static final String REQ_PER_SEC = "ReqPerSec";
-//	private static final String BYTES_PER_SEC = "BytesPerSec";
-//	private static final String BYTES_PER_REQ = "BytesPerReq";
 	
+	private static final String TOTAL_KBYTES = "Total kBytes";
+    private static final String TOTAL_BYTES = "Total Bytes";	
 	private static final String BUSY_WORKERS = "BusyWorkers";
 	private static final String IDLE_WORKERS = "IdleWorkers";	
 	private static final String SCOREBOARD = "Scoreboard";
-	// based on BUSY_WORKERS and IDEL_WORKERS
 	private static final String IDLE_PERCENT = "IdleWorkersPercentage";
 	private static final String BUSY_PERCENT = "BusyWorkersPercentage";
 	
-	private Map stats;
+	private Map<String, Double> stats;
 	private URL url;
 	private Logger logger;
 	
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.stats.provider.AbstractStatisticsProvider#getStatistic(com.datasynapse.fabric.stats.StatisticsMetadata)
-	 */
 	public Statistic getStatistic(StatisticsMetadata statistic) {
+		
 		String name = statistic.getName();
         String internalName = ((ApacheStatisticsMetadata) statistic).getInternalName();
 		Double value = (Double)stats.get(internalName);
@@ -61,9 +52,6 @@ public class ApacheStatisticsProvider extends AbstractStatisticsProvider {
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.stats.provider.AbstractStatisticsProvider#init(com.datasynapse.fabric.container.Container, com.datasynapse.fabric.domain.Domain, com.datasynapse.fabric.container.ProcessWrapper, com.datasynapse.fabric.common.RuntimeContext)
-	 */
 	public void init(Container container, Domain domain, ProcessWrapper process, 
 			RuntimeContext context) {
 		if (logger == null)
@@ -72,9 +60,6 @@ public class ApacheStatisticsProvider extends AbstractStatisticsProvider {
 		url = ((ApacheContainer)container).getStatUrl();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.datasynapse.fabric.stats.provider.AbstractStatisticsProvider#getStatistics(java.lang.Object)
-	 */
 	public Statistic[] getStatistics(Object key) {
 		BufferedReader in = null;
 		try {
@@ -82,7 +67,7 @@ public class ApacheStatisticsProvider extends AbstractStatisticsProvider {
 
 			String line;
 			String[] values;
-			stats = new HashMap(this.getSupportedStatisticCount()+2);
+			stats = new HashMap<String, Double>(this.getSupportedStatisticCount()+2);
 
 			while ((line = in.readLine()) != null) {
 				if (line.indexOf(SCOREBOARD) == -1) { // skip scoreboard line
