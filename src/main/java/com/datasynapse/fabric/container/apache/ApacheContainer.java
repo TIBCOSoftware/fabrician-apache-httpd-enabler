@@ -113,7 +113,7 @@ public class ApacheContainer extends ExecContainer {
         }
     }
 	
-    public static Feature getFeature(String featureName, Container container) {
+    private static Feature getFeature(String featureName, Container container) {
         if (container != null) {
             for (int i = 0; i < container.getSupportedFeatureCount(); i++) {
                 Feature feature = container.getSupportedFeature(i);
@@ -125,7 +125,7 @@ public class ApacheContainer extends ExecContainer {
         return null;
     }
     
-    public static FeatureInfo getFeatureInfo(Feature feature, Domain domain) {
+    private static FeatureInfo getFeatureInfo(Feature feature, Domain domain) {
         String infoClassName = feature.getInfoClass();
         for (int i = 0; i < domain.getFeatureInfoCount(); i++) {
             FeatureInfo info = domain.getFeatureInfo(i);
@@ -136,9 +136,7 @@ public class ApacheContainer extends ExecContainer {
         return null;
     }
     
-    public static boolean isWindows() {
+    private static boolean isWindows() {
         return System.getProperty("os.name").indexOf("Window") != -1;        
     }
-
-
 }
