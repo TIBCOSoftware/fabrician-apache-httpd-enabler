@@ -15,7 +15,7 @@ import com.datasynapse.fabric.stats.evaluator.Evaluator;
 
 public class DeltaEvaluator implements Evaluator {
 
-	private static final long serialVersionUID = 4595295990880109284L;
+    private static final long serialVersionUID = 4595295990880109284L;
     private double previousValue = 0;
     
     public Statistic evaluate(Statistic statistic) throws Exception {
@@ -24,7 +24,7 @@ public class DeltaEvaluator implements Evaluator {
         
         try {            
             if (valueDifference < 0) {
-            	Logger.getLogger(getClass().getSimpleName()).warning("Statistic value was reset, so aborting delta calculation");
+                Logger.getLogger(getClass().getSimpleName()).warning("Statistic value was reset, so aborting delta calculation");
                 throw new Exception("Statistic value was reset, so aborting delta calculation");
             } 
             statistic.setValue(valueDifference);
@@ -35,28 +35,28 @@ public class DeltaEvaluator implements Evaluator {
     }
     
     @Override
-	public void addPropertyChangeListener(BeanPropertyChangeListener arg0) {
-		
-	}
+    public void addPropertyChangeListener(BeanPropertyChangeListener arg0) {
+        
+    }
 
-	@Override
-	public void beginBulkUpdate() {
-		
-	}
+    @Override
+    public void beginBulkUpdate() {
+        
+    }
 
-	@Override
-	public void endBulkUpdate() {
-		
-	}
+    @Override
+    public void endBulkUpdate() {
+        
+    }
 
-	@Override
-	public BeanPropertyChangeListener[] getPropertyChangeListeners() {
-		return null;
-	}
+    @Override
+    public BeanPropertyChangeListener[] getPropertyChangeListeners() {
+        return null;
+    }
 
-	@Override
-	public void removePropertyChangeListener(BeanPropertyChangeListener arg0) {
-		
-	}
+    @Override
+    public void removePropertyChangeListener(BeanPropertyChangeListener arg0) {
+        
+    }
 
 }

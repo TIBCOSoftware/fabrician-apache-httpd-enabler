@@ -15,29 +15,29 @@ import com.datasynapse.fabric.domain.Domain;
 
 public class ApacheRunningCondition implements RunningCondition {
     
-	private String _errormsg;
+    private String _errormsg;
     private long _pollPeriod;
     private ApacheContainer _container;
-	
-	public String getErrorMessage() {
-		return _errormsg;
-	}
+    
+    public String getErrorMessage() {
+        return _errormsg;
+    }
 
-	public long getPollPeriod() {
-		return _pollPeriod;		
-	}
+    public long getPollPeriod() {
+        return _pollPeriod;        
+    }
 
-	public void init(Container container, Domain domain,
-			ProcessWrapper process, RuntimeContext runtimeContext) {
-		_container = (ApacheContainer)container;
-	}
+    public void init(Container container, Domain domain,
+        ProcessWrapper process, RuntimeContext runtimeContext) {
+        _container = (ApacheContainer)container;
+    }
 
-	public boolean isRunning() {
-		return _container.checkCondition();
-	}
+    public boolean isRunning() {
+        return _container.checkCondition();
+    }
 
-	public void setPollPeriod(long pollPeriod) {
-		_pollPeriod = pollPeriod;
-	}
+    public void setPollPeriod(long pollPeriod) {
+        _pollPeriod = pollPeriod;
+    }
 
 }

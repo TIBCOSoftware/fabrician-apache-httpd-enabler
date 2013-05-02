@@ -14,24 +14,24 @@ import com.datasynapse.fabric.container.ProcessWrapper;
 import com.datasynapse.fabric.domain.Domain;
 
 public class ApacheStartCondition implements StartCondition {
-	
-	private ApacheContainer _container;
-	private long _pollPeriod;
-	
-	public long getPollPeriod() {
-		return _pollPeriod;
-	}
+    
+    private ApacheContainer _container;
+    private long _pollPeriod;
+    
+    public long getPollPeriod() {
+        return _pollPeriod;
+    }
 
-	public boolean hasStarted() throws Exception {
-		return _container.checkCondition();
-	}
+    public boolean hasStarted() throws Exception {
+        return _container.checkCondition();
+    }
 
-	public void init(Container container, Domain domain, ProcessWrapper process, RuntimeContext runtimeContext) {
-		_container = (ApacheContainer)container;
-	}
+    public void init(Container container, Domain domain, ProcessWrapper process, RuntimeContext runtimeContext) {
+        _container = (ApacheContainer)container;
+    }
 
-	public void setPollPeriod(long pollPeriod) {
-		_pollPeriod = pollPeriod;
-	}
+    public void setPollPeriod(long pollPeriod) {
+        _pollPeriod = pollPeriod;
+    }
 
 }
