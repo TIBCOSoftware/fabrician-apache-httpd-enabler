@@ -1,237 +1,238 @@
 <container class="com.datasynapse.fabric.container.apache.ApacheContainer">
-	<import package="com.datasynapse.fabric.container"/>
-	<import package="com.datasynapse.fabric.domain"/>
-	<import package="com.datasynapse.fabric.common"/>
-	<import package="com.datasynapse.fabric.stats"/>
-	<import package="com.datasynapse.fabric.stats.aggregator"/>
-	<import package="com.datasynapse.fabric.stats.evaluator"/>
-	<import package="com.datasynapse.fabric.stats.provider"/>	
-	<import package="com.datasynapse.fabric.container.apache"/>
-	
+	<import package="com.datasynapse.fabric.container" />
+	<import package="com.datasynapse.fabric.domain" />
+	<import package="com.datasynapse.fabric.common" />
+	<import package="com.datasynapse.fabric.stats" />
+	<import package="com.datasynapse.fabric.stats.aggregator" />
+	<import package="com.datasynapse.fabric.stats.evaluator" />
+	<import package="com.datasynapse.fabric.stats.provider" />
+	<import package="com.datasynapse.fabric.container.apache" />
+
 	<!-- <property name="targetConfigDir" value="${SERVER_RUNTIME_DIR}"/> -->
-	<property name="blocking" value="False"/>
-	<property name="distributionVersion" value="${distro-version}"/>
-	<property name="supportedDomainType" value="Apache Web Server"/>
-	<property name="shutdownTimeout" value="120000"/>
-	<property name="name" value="Apache Container"/>
-	<property name="version" value="${project.version}"/>
-	<property name="description" value="Container provide by DataSynapse for running Apache Web Server"/>
-	<property name="modified" value="False"/>
-	
+	<property name="blocking" value="False" />
+	<property name="distributionVersion" value="${distro-version}" />
+	<property name="supportedDomainType" value="Apache Web Server" />
+	<property name="shutdownTimeout" value="120000" />
+	<property name="name" value="Apache Container" />
+	<property name="version" value="${project.version}" />
+	<property name="description" value="Container provide by DataSynapse for running Apache Web Server" />
+	<property name="modified" value="False" />
+
 	<unixcommand class="com.datasynapse.fabric.container.LifecycleCommand">
-		<property name="startupCommand" value="${CONTAINER_WORK_DIR}/container.sh start"/>
-		<property name="shutdownCommand" value="${CONTAINER_WORK_DIR}/container.sh stop"/>
+		<property name="startupCommand" value="${CONTAINER_WORK_DIR}/container.sh start" />
+		<property name="shutdownCommand" value="${CONTAINER_WORK_DIR}/container.sh stop" />
 	</unixcommand>
 
-	<windowscommand class="com.datasynapse.fabric.container.LifecycleCommand">		
-		<property name="startupCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" start'/>
-		<property name="shutdownCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" stop'/>
+	<windowscommand class="com.datasynapse.fabric.container.LifecycleCommand">
+		<property name="startupCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" start' />
+		<property name="shutdownCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" stop' />
 	</windowscommand>
 
-    <startCondition class="ApacheStartCondition">
-        <property name="pollPeriod" value="15000"/>
-    </startCondition>
-    <runningCondition class="ApacheRunningCondition">
-        <property name="pollPeriod" value="30000"/>
-    </runningCondition>
+	<startCondition class="ApacheStartCondition">
+		<property name="pollPeriod" value="15000" />
+	</startCondition>
+	<runningCondition class="ApacheRunningCondition">
+		<property name="pollPeriod" value="30000" />
+	</runningCondition>
 
 	<runtimecontexttemplate class="com.datasynapse.fabric.common.DefaultRuntimeContext">
 		<variable class="RuntimeContextVariable">
-			<property name="name" value="SERVER_RUNTIME_DIR"/>
-			<property name="autoIncrementType" value="None"/>
-			<property name="value" value="${ENGINE_WORK_DIR}/fabric/apache2"/>
-			<property name="type" value="Environment"/>
-			<property name="description" value="Work directory containing server configuration, log, and web site files"/>
+			<property name="name" value="SERVER_RUNTIME_DIR" />
+			<property name="autoIncrementType" value="None" />
+			<property name="value" value="${ENGINE_WORK_DIR}/fabric/apache2" />
+			<property name="type" value="Environment" />
+			<property name="description" value="Work directory containing server configuration, log, and web site files" />
 		</variable>
 		<variable class="RuntimeContextVariable">
-			<property name="name" value="LISTEN_PORT"/>
-			<property name="value" value="8080"/>
-			<property name="type" value="String"/>
-			<property name="autoIncrementType" value="Numeric"/>
-			<property name="description" value="Web Server listening port"/>			
+			<property name="name" value="LISTEN_PORT" />
+			<property name="value" value="8080" />
+			<property name="type" value="String" />
+			<property name="autoIncrementType" value="Numeric" />
+			<property name="description" value="Web Server listening port" />
 		</variable>
 		<variable class="RuntimeContextVariable">
-			<property name="name" value="LISTEN_PORT_SSL"/>
-			<property name="value" value="443"/>
-			<property name="type" value="String"/>
-			<property name="autoIncrementType" value="Numeric"/>
-			<property name="description" value="Web Server SSL listening port"/>			
-		</variable>		
-		<variable class="RuntimeContextVariable">
-			<property name="name" value="SERVER_STATUS_PROTOCAL"/>
-			<property name="value" value="http"/>
-			<property name="type" value="String"/>	
-			<property name="description" value="Protocal used to retrieve server statistics"/>		
-		</variable>														
-		<variable class="RuntimeContextVariable">
-			<property name="name" value="SERVER_STATUS_PATH"/>
-			<property name="value" value="/server-status"/>
-			<property name="type" value="String"/>
-			<property name="description" value="URL path to retrieve server statistics"/>			
-		</variable>														
-		<variable class="RuntimeContextVariable">
-			<property name="name" value="SERVER_STATUS_QUERY"/>
-			<property name="value" value="auto"/>
-			<property name="type" value="String"/>
-			<property name="description" value="Query path to retrieve server statistics"/>		
+			<property name="name" value="LISTEN_PORT_SSL" />
+			<property name="value" value="443" />
+			<property name="type" value="String" />
+			<property name="autoIncrementType" value="Numeric" />
+			<property name="description" value="Web Server SSL listening port" />
 		</variable>
 		<variable class="RuntimeContextVariable">
-			<property name="name" value="FILE_ARCHIVE_DEPLOY_DIRECTORY"/>
-			<property name="value" value="${SERVER_RUNTIME_DIR}/htdocs"/>
-			<property name="type" value="String"/>
-			<property name="description" value="Directory to where uploaded application zip file will be unzipped"/>		
+			<property name="name" value="SERVER_STATUS_PROTOCAL" />
+			<property name="value" value="http" />
+			<property name="type" value="String" />
+			<property name="description" value="Protocal used to retrieve server statistics" />
+		</variable>
+		<variable class="RuntimeContextVariable">
+			<property name="name" value="SERVER_STATUS_PATH" />
+			<property name="value" value="/server-status" />
+			<property name="type" value="String" />
+			<property name="description" value="URL path to retrieve server statistics" />
+		</variable>
+		<variable class="RuntimeContextVariable">
+			<property name="name" value="SERVER_STATUS_QUERY" />
+			<property name="value" value="auto" />
+			<property name="type" value="String" />
+			<property name="description" value="Query path to retrieve server statistics" />
+		</variable>
+		<variable class="RuntimeContextVariable">
+			<property name="name" value="FILE_ARCHIVE_DEPLOY_DIRECTORY" />
+			<property name="value" value="${SERVER_RUNTIME_DIR}/htdocs" />
+			<property name="type" value="String" />
+			<property name="description" value="Directory to where uploaded application zip file will be unzipped" />
 		</variable>
 		<variable class="com.datasynapse.fabric.common.RuntimeContextVariable">
-			<property name="value" value="false"/>
-			<property name="autoIncrementType" value="None"/>
-			<property name="type" value="String"/>
-			<property name="description" value="Delete engine target work directory when deactivating container"/>
-			<property name="name" value="DELETETARGETDIR"/>
-		</variable>																						
+			<property name="value" value="false" />
+			<property name="autoIncrementType" value="None" />
+			<property name="type" value="String" />
+			<property name="description" value="Delete engine target work directory when deactivating container" />
+			<property name="name" value="DELETETARGETDIR" />
+		</variable>
 	</runtimecontexttemplate>
 
 	<supportedfeature class="com.datasynapse.fabric.container.Feature">
-		<property name="name" value="File Archive Support"/>	
-		<property name="description" value="Support for delpoying generic archives"/>
-		<property name="infoDescription" value="Specify the list of archives and the target directory to which to deploy them."/>
-		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.FileArchiveFeatureInfo"/>
+		<property name="name" value="File Archive Support" />
+		<property name="description" value="Support for delpoying generic archives" />
+		<property name="infoDescription" value="Specify the list of archives and the target directory to which to deploy them." />
+		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.FileArchiveFeatureInfo" />
 	</supportedfeature>
 
 	<supportedFeature class="Feature">
-		<property name="name" value="HTTP Support"/>
-		<property name="description" value="Support for HTTP routing"/>
-		<property name="infoDescription" value="Specify the protocols to report to the Broker for HTTP routing."/>
-		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.HttpFeatureInfo"/>
+		<property name="name" value="HTTP Support" />
+		<property name="description" value="Support for HTTP routing" />
+		<property name="infoDescription" value="Specify the protocols to report to the Broker for HTTP routing." />
+		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.HttpFeatureInfo" />
 	</supportedFeature>
-	
+
 	<supportedFeature class="Feature">
-		<property name="name" value="Application Logging Support"/>
-		<property name="description" value="Support for handling of custom application logs"/>
-		<property name="infoDescription" value="Specify if application logs are archived to the Engine log directory for viewing/searching. &lt;i>Note: The current application logs are still available for viewing/searching if this is not checked.&lt;/i>"/>
-		<property name="infoClass" value="com.datasynapse.fabric.container.apache.ApacheApplicationLoggingInfo"/>
+		<property name="name" value="Application Logging Support" />
+		<property name="description" value="Support for handling of custom application logs" />
+		<property name="infoDescription" value="Specify if application logs are archived to the Engine log directory for viewing/searching. &lt;i>Note: The current application logs are still available for viewing/searching if this is not checked.&lt;/i>" />
+		<property name="infoClass" value="com.datasynapse.fabric.container.apache.ApacheApplicationLoggingInfo" />
 	</supportedFeature>
-	
-    <statisticsProvider class="ApacheStatisticsProvider">
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Total Accesses"/>
-	    	<property name="description" value="Total requests processed since last started."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="requests"/>
-	    	<property name="internalName" value="Total Accesses"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Total Accesses"/>
-	  		</aggregator>
-   		</supportedStatistic>
 
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Total kBytes"/>
-	    	<property name="description" value="Total amount of data that has been transferred since last started."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="kBytes"/>
-	    	<property name="internalName" value="Total kBytes"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Total kBytes"/>
-	  		</aggregator>
-   		</supportedStatistic>
-
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Uptime"/>
-	    	<property name="description" value="Total amount of time web server has been running since last started."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="seconds"/>
-	  		<property name="internalName" value="Uptime"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Uptime"/>
-	  		</aggregator>
-   		</supportedStatistic>
-		
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Request Per Second"/>
-	    	<property name="description" value="Number of HTTP requests per second the web server processed during last poll interval."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="requests"/>
-	    	<property name="internalName" value="Total Accesses"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Request Per Second"/>
-	  		</aggregator>
-	  		<evaluator class="TimedThroughputStatisticEvaluator"/>
-   		</supportedStatistic>
-
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Bytes Per Second"/>
-	    	<property name="description" value="The amount of data the web server is transferring per second during last poll interval."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="bytes"/>
-	    	<property name="internalName" value="Total Bytes"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Bytes Per Second"/>
-	  		</aggregator>
-	  		<evaluator class="TimedThroughputStatisticEvaluator"/>
-   		</supportedStatistic>
-
-		<supportedStatistic class="com.datasynapse.fabric.stats.MultiStatisticsMetadata"> 
-		   <property name="name" value="Bytes Per Request"/>
-		   <property name="description" value="The average number of bytes being transferred per HTTP request during last poll interval."/>
-		   <property name="default" value="false"/>
-		   <property name="units" value="bytes"/>
-		   <statistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-		     <property name="name" value="Total Bytes"/>
-	      	 <property name="internalName" value="Total Bytes"/>
-	      	 <evaluator class="DeltaEvaluator"/>
-		   </statistic>  
-		   <statistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">> 
-		     <property name="name" value="Total Accesses"/>
-	      	 <property name="internalName" value="Total Accesses"/>
- 	      	 <evaluator class="DeltaEvaluator"/>
-		   </statistic>
-		   <operation class="com.datasynapse.fabric.stats.DivideOperation"/>
-		   <aggregator class="SourceAveragedAggregator">
-		     <property name="inputStatisticName" value="Bytes Per Request"/>
-		   </aggregator>
+	<statisticsProvider class="ApacheStatisticsProvider">
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Total Accesses" />
+			<property name="description" value="Total requests processed since last started." />
+			<property name="default" value="false" />
+			<property name="units" value="requests" />
+			<property name="internalName" value="Total Accesses" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Total Accesses" />
+			</aggregator>
 		</supportedStatistic>
-		
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Busy Workers"/>
-	    	<property name="description" value="The number of Apache threads actively processing HTTP requests."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="workers"/>
-	    	<property name="internalName" value="BusyWorkers"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Busy Workers"/>
-	  		</aggregator>
-   		</supportedStatistic>
 
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Idle Workers"/>
-	    	<property name="description" value="The number of idle Apache threads awaiting HTTP requests."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="workers"/>
-	    	<property name="internalName" value="IdleWorkers"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Idle Workers"/>
-	  		</aggregator>
-   		</supportedStatistic>
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Total kBytes" />
+			<property name="description" value="Total amount of data that has been transferred since last started." />
+			<property name="default" value="false" />
+			<property name="units" value="kBytes" />
+			<property name="internalName" value="Total kBytes" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Total kBytes" />
+			</aggregator>
+		</supportedStatistic>
 
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Idle Workers Percentage"/>
-	    	<property name="description" value="The percentage of idle Apache threads of all Apache threads."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="percent"/>
-	    	<property name="internalName" value="IdleWorkersPercentage"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Idle Workers Percentage"/>
-	  		</aggregator>
-   		</supportedStatistic>
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Uptime" />
+			<property name="description" value="Total amount of time web server has been running since last started." />
+			<property name="default" value="false" />
+			<property name="units" value="seconds" />
+			<property name="internalName" value="Uptime" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Uptime" />
+			</aggregator>
+		</supportedStatistic>
 
-	    <supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata"> 
-    		<property name="name" value="Busy Workers Percentage"/>
-	    	<property name="description" value="The percentage of busy Apache threads of all Apache threads."/>
-    		<property name="default" value="false"/> 
-	    	<property name="units" value="percent"/>
-	    	<property name="internalName" value="BusyWorkersPercentage"/>
-	  		<aggregator class="SourceAveragedAggregator">
-		  		<property name="inputStatisticName" value="Busy Workers Percentage"/>
-	  		</aggregator>
-   		</supportedStatistic>
-	</statisticsProvider>	
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Request Per Second" />
+			<property name="description" value="Number of HTTP requests per second the web server processed during last poll interval." />
+			<property name="default" value="false" />
+			<property name="units" value="requests" />
+			<property name="internalName" value="Total Accesses" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Request Per Second" />
+			</aggregator>
+			<evaluator class="TimedThroughputStatisticEvaluator" />
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Bytes Per Second" />
+			<property name="description" value="The amount of data the web server is transferring per second during last poll interval." />
+			<property name="default" value="false" />
+			<property name="units" value="bytes" />
+			<property name="internalName" value="Total Bytes" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Bytes Per Second" />
+			</aggregator>
+			<evaluator class="TimedThroughputStatisticEvaluator" />
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.stats.MultiStatisticsMetadata">
+			<property name="name" value="Bytes Per Request" />
+			<property name="description" value="The average number of bytes being transferred per HTTP request during last poll interval." />
+			<property name="default" value="false" />
+			<property name="units" value="bytes" />
+			<statistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+				<property name="name" value="Total Bytes" />
+				<property name="internalName" value="Total Bytes" />
+				<evaluator class="DeltaEvaluator" />
+			</statistic>
+			<statistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+				>
+				<property name="name" value="Total Accesses" />
+				<property name="internalName" value="Total Accesses" />
+				<evaluator class="DeltaEvaluator" />
+			</statistic>
+			<operation class="com.datasynapse.fabric.stats.DivideOperation" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Bytes Per Request" />
+			</aggregator>
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Busy Workers" />
+			<property name="description" value="The number of Apache threads actively processing HTTP requests." />
+			<property name="default" value="false" />
+			<property name="units" value="workers" />
+			<property name="internalName" value="BusyWorkers" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Busy Workers" />
+			</aggregator>
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Idle Workers" />
+			<property name="description" value="The number of idle Apache threads awaiting HTTP requests." />
+			<property name="default" value="false" />
+			<property name="units" value="workers" />
+			<property name="internalName" value="IdleWorkers" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Idle Workers" />
+			</aggregator>
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Idle Workers Percentage" />
+			<property name="description" value="The percentage of idle Apache threads of all Apache threads." />
+			<property name="default" value="false" />
+			<property name="units" value="percent" />
+			<property name="internalName" value="IdleWorkersPercentage" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Idle Workers Percentage" />
+			</aggregator>
+		</supportedStatistic>
+
+		<supportedStatistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
+			<property name="name" value="Busy Workers Percentage" />
+			<property name="description" value="The percentage of busy Apache threads of all Apache threads." />
+			<property name="default" value="false" />
+			<property name="units" value="percent" />
+			<property name="internalName" value="BusyWorkersPercentage" />
+			<aggregator class="SourceAveragedAggregator">
+				<property name="inputStatisticName" value="Busy Workers Percentage" />
+			</aggregator>
+		</supportedStatistic>
+	</statisticsProvider>
 </container>
