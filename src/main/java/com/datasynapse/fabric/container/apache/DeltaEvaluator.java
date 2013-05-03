@@ -9,11 +9,11 @@ package com.datasynapse.fabric.container.apache;
 
 import java.util.logging.Logger;
 
-import com.datasynapse.commons.beans.BeanPropertyChangeListener;
+import com.datasynapse.commons.beans.AbstractBean;
 import com.datasynapse.fabric.stats.Statistic;
 import com.datasynapse.fabric.stats.evaluator.Evaluator;
 
-public class DeltaEvaluator implements Evaluator {
+public class DeltaEvaluator extends AbstractBean implements Evaluator {
 
     private static final long serialVersionUID = 4595295990880109284L;
     private double previousValue = 0;
@@ -33,30 +33,4 @@ public class DeltaEvaluator implements Evaluator {
             previousValue = currentValue;
         }        
     }
-    
-    @Override
-    public void addPropertyChangeListener(BeanPropertyChangeListener arg0) {
-        
-    }
-
-    @Override
-    public void beginBulkUpdate() {
-        
-    }
-
-    @Override
-    public void endBulkUpdate() {
-        
-    }
-
-    @Override
-    public BeanPropertyChangeListener[] getPropertyChangeListeners() {
-        return null;
-    }
-
-    @Override
-    public void removePropertyChangeListener(BeanPropertyChangeListener arg0) {
-        
-    }
-
 }
