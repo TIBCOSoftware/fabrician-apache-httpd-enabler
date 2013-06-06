@@ -180,7 +180,6 @@
 				<evaluator class="DeltaEvaluator" />
 			</statistic>
 			<statistic class="com.datasynapse.fabric.container.apache.ApacheStatisticsMetadata">
-				>
 				<property name="name" value="Total Accesses" />
 				<property name="internalName" value="Total Accesses" />
 				<evaluator class="DeltaEvaluator" />
