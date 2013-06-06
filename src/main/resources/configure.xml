@@ -4,6 +4,7 @@
         <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>
         <regex pattern='Listen 80' replacement='Listen ${LISTEN_PORT}'/>
         <regex pattern='#ServerName www.example.com:80' replacement='ServerName ${HostUtils.getFQHostname()}:${LISTEN_PORT}'/>
+        <regex pattern='#Include conf\/extra\/httpd-info.conf' replacement='Include conf/extra/httpd-info.conf'/>
         <!-- for ssl support need setup ssl with /usr/local/apache2/conf/server.crt and server.key
         <regex pattern='#Include conf\/extra\/httpd-ssl.conf' replacement='Include conf/extra/httpd-ssl.conf'/> 
         -->
