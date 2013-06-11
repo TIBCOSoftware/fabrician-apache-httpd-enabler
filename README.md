@@ -34,6 +34,8 @@ The Distribution Grid Library is created by performing the following steps for e
 * Download and extract the Apache HTTP Server source from http://httpd.apache.org/.
 * Build the binaries according the Apache HTTP Server instructions.
 * Rename the root directory to apache2.
+* In apache2/conf/httpd.conf, uncomment the line **Include conf/extra/httpd-info.conf**, as this is required.
+* In apache2/conf/httpd.conf, uncomment any extra conf files you plan on using. 
 * Create a grid-library.xml file and place it next to the apache2 directory.
 * Create a tar.gz or zip of the contents.
 
@@ -43,6 +45,12 @@ The Distribution Grid Library is created by performing the following steps for e
         <grid-library-version>2.2.9</grid-library-version>
     </grid-library>
 ```
+
+**Notes** 
+* **Make sure the 'os' attribute is appropriate for you platform (linux or linux64)**
+* **Make sure the 'grid-library-version' element is set to the version of the server you just built**
+* **If you do not build into the default /usr/local/apache2 directory, you must update your configure.xml file with your install directory.**
+
 Statistics
 --------------------------------------
 * **Total Accesses** - Total requests processed since last started. 
