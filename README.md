@@ -19,30 +19,27 @@ Grid Library. The Enabler Runtime contains information specific to a Silver Fabr
 Enabler. Installation of the Apache HTTP Server Enabler involves copying these Grid 
 Libraries to the SF_HOME/webapps/livecluster/deploy/resources/gridlib directory on the Silver Fabric Broker. 
 
-Runtime Grid Library
---------------------------------------
-The Enabler Runtime Grid Library is created by building the maven project.  The build depends on the
-SilverFabricSDK jar file that is distributed with TIBCO Silver Fabric.  The SilverFabricSDK.jar file needs to
-be referenced in the maven pom.xml or it can be placed in the project root directory.
-```bash
-mvn package
-```
 
 Distribution Grid Library
 --------------------------------------
-The Distribution Grid Library is created by performing the following steps for each platform:
-* Download and extract the Apache HTTP Server source from http://httpd.apache.org/.
-* Build the binaries according the Apache HTTP Server instructions.
-* Rename the root directory to apache2.
-* In apache2/conf/httpd.conf, uncomment the line **Include conf/extra/httpd-info.conf**, as this is required.
-* In apache2/conf/httpd.conf, uncomment any extra conf files you plan on using. 
+The Distribution library must be built from source on the platform on which you will run the server.
+Because there are many ways that Apache can be built, please see the following for a step-by-step guide on how to build and deploy:
+
+[Creating a 64-bit Apache-2.4 Linux Distribution](https://github.com/fabrician/apache-httpd-enabler/wiki/Creating-a-64-bit-Apache-2.4-Linux-Distribution-on-Ubuntu)
+
+The fundamental steps, as covered in more detail in the link above, are:
+* Obtain the Apache HTTP Server source from http://httpd.apache.org/.
+* Obtain the APR (Apache Portable Runtime) and APR-utils source from http://apr.apache.org/
+* Build the binaries according the Apache HTTP Server instructions, with local APR. At this point you need to decide what modules to have available. For more information, see http://httpd.apache.org/docs/2.4/install.html
+* In apache2/conf/httpd.conf, add the directive **Include conf/fabric/*.conf**. This allows a component to add new configurations to the enabler.
+* Enable httpd-info by copying **conf/extra/httpd-info.conf** into the **conf/fabric** directory. This is required by the enabler to function.
 * Create a grid-library.xml file and place it next to the apache2 directory.
-* Create a tar.gz or zip of the contents.
+* Create an archive library called apache-distribution-{version}.tar.gz, with the **apache2** directory and **grid-library.xml** in the root of the archive.
 
 ```XML
     <grid-library os="linux">
         <grid-library-name>apache-distribution</grid-library-name>
-        <grid-library-version>2.2.9</grid-library-version>
+        <grid-library-version>{version}</grid-library-version>
     </grid-library>
 ```
 
@@ -50,6 +47,20 @@ The Distribution Grid Library is created by performing the following steps for e
 * **Make sure the 'os' attribute is appropriate for you platform (linux or linux64)**
 * **Make sure the 'grid-library-version' element is set to the version of the server you just built**
 * **If you do not build into the default /usr/local/apache2 directory, you must update your configure.xml file with your install directory.**
+
+Runtime Grid Library
+--------------------------------------
+The Enabler Runtime Grid Library is created by building the maven project.  The build depends on the
+SilverFabricSDK jar file that is distributed with TIBCO Silver Fabric.  The SilverFabricSDK.jar file needs to
+be referenced in the maven pom.xml or it can be placed in the project root directory.
+
+* Edit the pom.xml file, and update the version of the distribution to the one you just built.
+* Build the library with maven:
+
+```bash
+mvn package
+```
+
 
 Statistics
 --------------------------------------
