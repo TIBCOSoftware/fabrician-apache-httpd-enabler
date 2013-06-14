@@ -32,7 +32,6 @@ The fundamental steps, as covered in more detail in the link above, are:
 * Obtain the APR (Apache Portable Runtime) and APR-utils source from http://apr.apache.org/
 * Build the binaries according the Apache HTTP Server instructions, with local APR. At this point you need to decide what modules to have available. For more information, see http://httpd.apache.org/docs/2.4/install.html
 * In apache2/conf/httpd.conf, add the directive **Include conf/fabric/*.conf**. This allows a component to add new configurations to the enabler.
-* Enable httpd-info by copying **conf/extra/httpd-info.conf** into the **conf/fabric** directory. This is required by the enabler to function.
 * Create a grid-library.xml file and place it next to the apache2 directory.
 * Create an archive library called apache-distribution-{version}.tar.gz, with the **apache2** directory and **grid-library.xml** in the root of the archive.
 
