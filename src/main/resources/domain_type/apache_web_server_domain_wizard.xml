@@ -33,14 +33,24 @@
     </pageInfo>
 
     <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
-        <property name="pageId" value="fileArchive" />
-        <property name="pageFileUri" value="system:///domainPages/fileArchivePage.xml" />
+        <property name="pageId" value="archive" />
+        <property name="pageFileUri" value="system:///domainPages/archivePage.xml" />
         <filter class="AdvancedFeatureFilter">
-        	<property name="requiredFeatures" value="File Archive Support"/>
-        	<property name="prohibitedFeatures" value="Clustered Managed Server Support"/>        	
+            <property name="requiredFeatures" value="Archive Support"/>
+            <property name="prohibitedFeatures" value="Clustered Managed Server Support"/>
+            <property name="prohibitedFeatureInfoClasses" value="com.datasynapse.fabric.container.websphere.WebSphereClusteringInfo"/>
         </filter>
     </pageInfo>
 
+    <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
+        <property name="pageId" value="archiveManagement"/>
+        <property name="pageFileUri" value="system:///domainPages/archiveManagementPage.xml"/>
+        <filter class="AdvancedFeatureFilter">
+            <property name="requiredFeatures" value="Archive Management Support"/>
+            <property name="prohibitedFeatures" value="Clustered Managed Server Support"/>
+        </filter>
+    </pageInfo>
+    
     <pageInfo class="com.datasynapse.fabric.propertysheet.wizard.WizardPageInfo">
         <property name="pageId" value="urlPattern" />
         <property name="pageFileUri" value="system:///domainPages/urlPatternPage.xml" />

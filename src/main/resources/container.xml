@@ -91,10 +91,10 @@
 	</runtimecontexttemplate>
 
 	<supportedfeature class="com.datasynapse.fabric.container.Feature">
-		<property name="name" value="File Archive Support" />
-		<property name="description" value="Support for delpoying generic archives" />
+		<property name="name" value="Archive Management Support" />
+		<property name="description" value="Support for managing archives" />
 		<property name="infoDescription" value="Specify the list of archives and the target directory to which to deploy them." />
-		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.FileArchiveFeatureInfo" />
+		<property name="infoClass" value="com.datasynapse.fabric.domain.featureinfo.ArchiveManagementFeatureInfo" />
 	</supportedfeature>
 
 	<supportedFeature class="Feature">
