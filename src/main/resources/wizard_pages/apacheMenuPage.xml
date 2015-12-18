@@ -27,21 +27,21 @@
 		</velocityTemplate>
 	</section>	
 
-	<if cond="${wizard.isFeatureAvailable('File Archive Support')}}">
-		<section class="BasicVelocitySection">
-			<property name="type" value="menu"/>	
-			<velocityTemplate>
-				<![CDATA[
-					<li>
-						<a href="/livecluster/domainWizard.do?pageId=fileArchive" class="fLink">
-							Add/remove archive files
-						</a>
-					</li>				
-				]]>			
-			</velocityTemplate>
-		</section>	
-	</if>
-	
+<if cond="${wizard.isFeatureAvailable('Archive Management Support') and !wizard.isFeatureAvailable('Clustered Managed Server Support')}">
+        <section class="BasicVelocitySection">
+            <property name="type" value="menu"/>    
+            <velocityTemplate>
+                <![CDATA[
+                    <li>
+                        <a href="javascript:doPRG('/livecluster/domainWizard.do?pageId=archiveManagement')" class="fLink">
+                            Add/remove archive files
+                        </a>
+                    </li>
+                ]]>         
+            </velocityTemplate>
+        </section>  
+    </if>
+    	
 	<if cond="${wizard.isFeatureAvailable('Http Support') and !wizard.isFeatureAvailable('Clustered Admin Server Support')}">
 		<section class="BasicVelocitySection">
 			<property name="type" value="menu"/>	

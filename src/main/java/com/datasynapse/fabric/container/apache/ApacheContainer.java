@@ -57,7 +57,7 @@ public class ApacheContainer extends ExecContainer implements ArchiveManagement,
     
     protected void doStart() throws Exception {
         File dir = new File(getStringVariableValue("SERVER_RUNTIME_DIR"));
-        updatePermissions(dir);
+//        updatePermissions(dir);
         
         // create save the url object to be used by conditions and stat providers
         int port = Integer.parseInt(getStringVariableValue("LISTEN_PORT"));
@@ -189,6 +189,8 @@ public class ApacheContainer extends ExecContainer implements ArchiveManagement,
         File deployedFile = new File(deploymentRoot, archiveName);
         if (!deployedFile.exists()) {
             ContainerUtils.copyFile(archive, deployedFile);
+            // Uncomment following to extract files from archive into directory if desired. Realize that means that archiveStop will need to change to remove the individual files if desired. 
+            // ArchiveUtils.extractFileTo(deployedFile, deploymentRoot);
         } else if (isActivating()) {
             getEngineLogger().warning("Cannot start archive " + archiveName + " during activation, archive is already running");
         } else {
