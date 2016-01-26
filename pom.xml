@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fabrician.enabler</groupId>
-	<artifactId>apache-container</artifactId>
+	<artifactId>apache-enabler</artifactId>
 	<name>Apache HTTP Server Enabler</name>
 	<packaging>jar</packaging>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2.0</version>
 	<description></description>
 	<properties>
-		<fabric-version>5.6.0.57</fabric-version>
+		<fabric-version>5.7.1.10</fabric-version>
 		<fabric-location>${basedir}/SilverFabricSDK.jar</fabric-location>
-		<distro-version>2.2.23</distro-version>
+		<distro-version>2.4.4</distro-version>
 	</properties>
 	<build>
 		<plugins>

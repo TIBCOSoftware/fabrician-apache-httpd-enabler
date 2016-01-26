@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.datasynapse.commons.util.FileUtils;
 import com.datasynapse.fabric.common.ActivationInfo;
 import com.datasynapse.fabric.common.ArchiveActivationInfo;
 import com.datasynapse.fabric.common.message.ArchiveLocator;
@@ -35,241 +35,356 @@ import com.datasynapse.fabric.util.ContainerUtils;
 /**
  * FabricServer apache httpd enabler implementation.
  */
-public class ApacheContainer extends ExecContainer implements ArchiveManagement, ArchiveProvider {
-    private static final long serialVersionUID = -4671237224306339437L;
+public class ApacheContainer extends ExecContainer implements
+		ArchiveManagement, ArchiveProvider {
+	private static final long serialVersionUID = -4671237224306339437L;
 
-    private static final String DEFAULT_ARCHIVE_INSTALL_DIR = "FILE_ARCHIVE_DEPLOY_DIRECTORY";
+	private static final String DEFAULT_ARCHIVE_INSTALL_DIR = "FILE_ARCHIVE_DEPLOY_DIRECTORY";
 
-    private HttpFeatureInfo _httpFeatureInfo;
-    private URL _staturl;
+	private static final String FORCE_UNDEPLOY = "FORCE_UNDEPLOY";
 
-    
-    private transient java.util.logging.Logger engineLogger;
+	private HttpFeatureInfo _httpFeatureInfo;
+	private URL _staturl;
 
-    public ApacheContainer() {
-        super();
-        engineLogger = Logger.getLogger(getClass().getSimpleName());
-    }
-    
-    protected void doInit(List additionalVariables) throws Exception {
-        super.doInit(additionalVariables);
-    }
-    
-    protected void doStart() throws Exception {
-        File dir = new File(getStringVariableValue("SERVER_RUNTIME_DIR"));
-//        updatePermissions(dir);
-        
-        // create save the url object to be used by conditions and stat providers
-        int port = Integer.parseInt(getStringVariableValue("LISTEN_PORT"));
-        String protocal = getStringVariableValue("SERVER_STATUS_PROTOCAL");
-        String path = getStringVariableValue("SERVER_STATUS_PATH");
-        String query = getStringVariableValue("SERVER_STATUS_QUERY");
-        URI uri = new URI(protocal, null, "localhost", port, path, query, null);;
-        _staturl = uri.toURL();
-        engineLogger.fine("Statistics URL: " + _staturl);
-        
-        super.doStart();
-    }
-    
-    protected boolean checkCondition() {
-        boolean rc = false;
-        try {
-            _staturl.openStream();
-            rc = true;
-        } catch (IOException e) {
-            rc = false;
-            getEngineLogger().warning("Failed to open statistics url. Server probably is not running.");
-        }
-        return rc;
-    }
-    
-    protected URL getStatUrl() {
-        return _staturl;
-    }
-    
-    protected void doInstall(ActivationInfo info) throws Exception {
-        Feature feature = getFeature(Feature.HTTP_FEATURE_NAME, this);
-        _httpFeatureInfo = (HttpFeatureInfo) getFeatureInfo(feature, getCurrentDomain());
-        if (_httpFeatureInfo.isHttpEnabled()) {
-            info.setProperty(ActivationInfo.HTTP_PORT, getStringVariableValue("LISTEN_PORT"));
-        }
-        if (_httpFeatureInfo.isHttpsEnabled()) {
-            info.setProperty(ActivationInfo.HTTPS_PORT, getStringVariableValue("LISTEN_PORT_SSL"));
-        }
-        super.doInstall(info);
-    }
-    
-    protected void doUninstall() throws Exception {
-        super.doUninstall();
-    }
-    
-    protected void doShutdown() throws Exception {
-        super.doShutdown();
-        String delete = getStringVariableValue("DELETETARGETDIR", "");
-        if (delete.compareToIgnoreCase("true") == 0 ) {
-            File todelete = new File (getStringVariableValue("SERVER_RUNTIME_DIR"));             
-            if (!todelete.exists()) {
-                return;
-            } else {
-                todelete.delete();
-            }
-        }                
-    }
+	private transient java.util.logging.Logger engineLogger;
 
-    private void updatePermissions(File rootDir) throws IOException, InterruptedException {
-        if (!isWindows()) {
-            ProcessWrapper perm = new ProcessWrapper(getRuntime(), "chmod -R u+x " + rootDir.getAbsolutePath(), null, rootDir);
-            perm.exec();
-            perm.waitFor();
-        }
-    }
-    
-    private static Feature getFeature(String featureName, Container container) {
-        if (container != null) {
-            for (int i = 0; i < container.getSupportedFeatureCount(); i++) {
-                Feature feature = container.getSupportedFeature(i);
-                if (feature.getName().equalsIgnoreCase(featureName)) {
-                    return feature;
-                }
-            }
-        }
-        return null;
-    }
-    
-    private static FeatureInfo getFeatureInfo(Feature feature, Domain domain) {
-        String infoClassName = feature.getInfoClass();
-        for (int i = 0; i < domain.getFeatureInfoCount(); i++) {
-            FeatureInfo info = domain.getFeatureInfo(i);
-            if (info.getClass().getName().equals(infoClassName)) {
-                return info;
-            }
-        }
-        return null;
-    }
-    
-    private static boolean isWindows() {
-        return System.getProperty("os.name").indexOf("Window") != -1;        
-    }
+	public ApacheContainer() {
+		super();
+		engineLogger = Logger.getLogger(getClass().getSimpleName());
+	}
 
-    private File getStagedDeployDir() {
-        try {
-            return new File(getStringVariableValue("ENGINE_WORK_DIR"), getArchiveManagementFeatureInfo().getArchiveDirectory());
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
-    private File getDeployDir() {
-        try {
-            return new File(getStringVariableValue(DEFAULT_ARCHIVE_INSTALL_DIR));
-        } catch (Exception e) {
-            return null;
-        }
-    }
+	protected void doInit(List additionalVariables) throws Exception {
+		super.doInit(additionalVariables);
+	}
 
-    @Override
-    public void archiveDeploy(String archiveName,
-            List<ArchiveLocator> archiveLocators, Properties properties)
-            throws Exception {
-        File archive = ContainerUtils.retrieveAndConfigureArchiveFile(this, archiveName, archiveLocators, properties);
-        if (!archive.exists()) {
-            throw new Exception("Failed to deploy " + archiveName);
-        }
-    }
+	protected void doStart() throws Exception {
+		File dir = new File(getStringVariableValue("SERVER_RUNTIME_DIR"));
+		// updatePermissions(dir);
 
-    @Override
-    public ArchiveActivationInfo archiveStart(String archiveName, Properties properties) throws Exception {
-        File deploymentRoot = getDeployDir();
-        File archive = new File(getStagedDeployDir(), archiveName);
-        if (!archive.exists()) {
-            throw new Exception("Cannot start archive " + archiveName + ", not deployed");
-        }
-        deploymentRoot.mkdirs();
-        // deploy only if not already present in captured Component.
-        File deployedFile = new File(deploymentRoot, archiveName);
-        if (!deployedFile.exists()) {
-            ContainerUtils.copyFile(archive, deployedFile);
-            // Uncomment following to extract files from archive into directory if desired. Realize that means that archiveStop will need to change to remove the individual files if desired. 
-            // ArchiveUtils.extractFileTo(deployedFile, deploymentRoot);
-        } else if (isActivating()) {
-            getEngineLogger().warning("Cannot start archive " + archiveName + " during activation, archive is already running");
-        } else {
-            throw new Exception("Cannot start archive " + archiveName + ", archive is already running");
-        }
-            
-        return new ArchiveActivationInfo(archiveName, "1");
-    }
+		// create save the url object to be used by conditions and stat
+		// providers
+		int port = Integer.parseInt(getStringVariableValue("LISTEN_PORT"));
+		String protocal = getStringVariableValue("SERVER_STATUS_PROTOCAL");
+		String path = getStringVariableValue("SERVER_STATUS_PATH");
+		String query = getStringVariableValue("SERVER_STATUS_QUERY");
+		URI uri = new URI(protocal, null, "localhost", port, path, query, null);
+		_staturl = uri.toURL();
+		engineLogger.fine("Statistics URL: " + _staturl);
 
-    @Override
-    public ArchiveActivationInfo archiveScaleUp(String archiveName,
-            List<ArchiveLocator> archiveLocators) throws Exception {
-        getEngineLogger().severe("Archive "+archiveName+" scale-up called which is not supported on this enabler.");
-        throw new Exception("Not Implemented");
-    }
+		super.doStart();
+	}
 
-    @Override
-    public void archiveScaleDown(String archiveName, String archiveId)
-            throws Exception {
-        getEngineLogger().severe("Archive "+archiveName+" scale-down called which is not supported on this enabler.");
-        throw new Exception("Not Implemented");
-    }
+	protected boolean checkCondition() {
+		boolean rc = false;
+		try {
+			_staturl.openStream();
+			rc = true;
+		} catch (IOException e) {
+			rc = false;
+			getEngineLogger()
+					.warning(
+							"Failed to open statistics url. Server probably is not running.");
+		}
+		return rc;
+	}
 
-    @Override
-    public void archiveStop(String archiveName, String archiveId, Properties properties) throws Exception {
-        String nameId = ArchiveUtils.getArchiveNameIdString(archiveName, archiveId);
-        
-        File file = new File(getDeployDir(), archiveName);
-        if (!file.exists()) {
-            throw new Exception("Cannot stop archive " + nameId + " because it is not running.");
-        }
-        FileUtils.delete(file);
-        if (file.exists()) {
-            throw new Exception("Failed to stop archive " + nameId);
-        }        
-    }
+	protected URL getStatUrl() {
+		return _staturl;
+	}
 
-    @Override
-    public void archiveUndeploy(String archiveName, Properties properties)
-            throws Exception {
+	protected void doInstall(ActivationInfo info) throws Exception {
+		Feature feature = getFeature(Feature.HTTP_FEATURE_NAME, this);
+		_httpFeatureInfo = (HttpFeatureInfo) getFeatureInfo(feature,
+				getCurrentDomain());
 
-        String forcePropertyName = "FORCE_UNDEPLOY";
-        String forceProperty = null;
-        if (properties != null) {
-            forceProperty = properties.getProperty(forcePropertyName);
-        }
-        File deployedFile = new File(getDeployDir(), archiveName);
-        if (deployedFile.exists()) {
-            if (forceProperty == null || !forceProperty.equalsIgnoreCase("true")) {
-                throw new Exception("Cannot undeploy archive " + archiveName + " because it is running (use property " + forcePropertyName + "=true to override).");
-            } else {
-                FileUtils.delete(deployedFile);
-            }
-        }
-        File file = new File(getStagedDeployDir(), archiveName);
-        FileUtils.delete(file);
-        if (file.exists()) {
-            throw new Exception("Failed to undeploy archive " + archiveName);
-        }
-    }
+		if (_httpFeatureInfo.isHttpEnabled()) {
+			info.setProperty(ActivationInfo.HTTP_PORT,
+					getStringVariableValue("LISTEN_PORT"));
+		}
+		if (_httpFeatureInfo.isHttpsEnabled()) {
+			info.setProperty(ActivationInfo.HTTPS_PORT,
+					getStringVariableValue("LISTEN_PORT_SSL"));
+		}
 
-    @Override
-    public ArchiveDetail[] archiveDetect() throws Exception {
-        getEngineLogger().severe("Archive detect called which is not supported on this enabler.");
-        throw new Exception("Not Implemented");
-    }
+		super.doInstall(info);
+	}
 
-    @Override
-    public String[] urlDetect() throws Exception {
-        // TODO Auto-generated method stub
-        return new String[] {"apache"};
-    }
+	protected void doUninstall() throws Exception {
+		super.doUninstall();
+	}
 
-    @Override
-    public File getArchive(String archiveName) throws Exception {
-        File archive = new File(getDeployDir(), archiveName);
-        if (!archive.exists()) {
-            throw new Exception("Unable to provide archive " + archiveName + ", not found in deploy directory");
-        }
-        return archive;
-    }
+	protected void doShutdown() throws Exception {
+		super.doShutdown();
+		String delete = getStringVariableValue("DELETETARGETDIR", "");
+		if (delete.compareToIgnoreCase("true") == 0) {
+			File todelete = new File(
+					getStringVariableValue("SERVER_RUNTIME_DIR"));
+			if (!todelete.exists()) {
+				return;
+			} else {
+				todelete.delete();
+			}
+		}
+	}
+
+	private void updatePermissions(File rootDir) throws IOException,
+			InterruptedException {
+		if (!isWindows()) {
+			ProcessWrapper perm = new ProcessWrapper(getRuntime(),
+					"chmod -R u+x " + rootDir.getAbsolutePath(), null, rootDir);
+			perm.exec();
+			perm.waitFor();
+		}
+	}
+
+	private static Feature getFeature(String featureName, Container container) {
+		if (container != null) {
+			for (int i = 0; i < container.getSupportedFeatureCount(); i++) {
+				Feature feature = container.getSupportedFeature(i);
+				if (feature.getName().equalsIgnoreCase(featureName)) {
+					return feature;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static FeatureInfo getFeatureInfo(Feature feature, Domain domain) {
+		String infoClassName = feature.getInfoClass();
+		for (int i = 0; i < domain.getFeatureInfoCount(); i++) {
+			FeatureInfo info = domain.getFeatureInfo(i);
+			if (info.getClass().getName().equals(infoClassName)) {
+				return info;
+			}
+		}
+		return null;
+	}
+
+	private static boolean isWindows() {
+		return System.getProperty("os.name").indexOf("Window") != -1;
+	}
+
+	private File getArchiveDeployDir() {
+		try {
+			return new File(getStringVariableValue("ENGINE_WORK_DIR"),
+					getArchiveManagementFeatureInfo().getArchiveDirectory());
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	private File getArchiveInstallDir() {
+		try {
+			return new File(getStringVariableValue(DEFAULT_ARCHIVE_INSTALL_DIR));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	private File getExpandedArchive(String archiveName) {
+		return new File(getArchiveDeployDir(),
+				getSimpleArchiveName(archiveName));
+	}
+
+	@Override
+	public void archiveDeploy(String archiveName,
+			List<ArchiveLocator> archiveLocators, Properties properties)
+			throws Exception {
+
+		engineLogger.info("Enter archiveDeploy:" + archiveName);
+
+		// check if the archive is running
+		File expandedArchive = getExpandedArchive(archiveName);
+
+		if (expandedArchive.exists()) {
+			archiveUndeploy(archiveName, properties);
+		}
+
+		File archive = ContainerUtils.retrieveAndConfigureArchiveFile(this,
+				archiveName, archiveLocators, properties);
+		if (!archive.exists()) {
+			throw new Exception("Failed to deploy " + archiveName);
+		}
+
+		engineLogger.info("Exit archiveDeploy:" + archiveName);
+	}
+
+	@Override
+	public ArchiveActivationInfo archiveStart(String archiveName,
+			Properties properties) throws Exception {
+
+		engineLogger.info("Enter archiveStart:" + archiveName);
+
+		File expandedArchive = getExpandedArchive(archiveName);
+
+		if (!expandedArchive.isDirectory()) {
+			File archive = new File(getArchiveDeployDir(), archiveName);
+			if (!archive.exists()) {
+				throw new Exception("Cannot start archive " + archiveName
+						+ ", not deployed");
+			}
+
+			expandedArchive.mkdirs();
+			ArchiveUtils.extractFileTo(archive, expandedArchive);
+
+			File archiveDir = getArchiveInstallDir();
+			if (!archiveDir.exists()) {
+				archiveDir.mkdirs();
+			}
+			ArchiveUtils.extractFileTo(archive, archiveDir);
+		}
+		ArchiveActivationInfo info = new ArchiveActivationInfo(archiveName, "1");
+
+		engineLogger.info("Exit archiveStart:" + archiveName);
+
+		return info;
+	}
+
+	@Override
+	public ArchiveActivationInfo archiveScaleUp(String archiveName,
+			List<ArchiveLocator> archiveLocators) throws Exception {
+		getEngineLogger()
+				.severe("Archive "
+						+ archiveName
+						+ " scale-up called which is not supported on this enabler.");
+		throw new Exception("Not Implemented");
+	}
+
+	@Override
+	public void archiveScaleDown(String archiveName, String archiveId)
+			throws Exception {
+		getEngineLogger()
+				.severe("Archive "
+						+ archiveName
+						+ " scale-down called which is not supported on this enabler.");
+		throw new Exception("Not Implemented");
+	}
+
+	private String getSimpleArchiveName(String archiveName) {
+		String simpleArchiveName = archiveName;
+
+		int index = archiveName.indexOf(".");
+		if (index > 0)
+			simpleArchiveName = archiveName.substring(0, index);
+		return simpleArchiveName;
+	}
+
+	@Override
+	public void archiveStop(String archiveName, String archiveId,
+			Properties properties) throws Exception {
+
+		engineLogger.info("Enter archiveStop:" + archiveName);
+		File expandedArchive = getExpandedArchive(archiveName);
+
+		if (expandedArchive.isDirectory()) {
+			File[] archiveFiles = ContainerUtils.listFiles(expandedArchive, null);
+			File installDir = getArchiveInstallDir();
+
+			if (installDir.isDirectory()) {
+				String expandedArchivePath = expandedArchive.getAbsolutePath();
+				String installPath = installDir.getAbsolutePath();
+
+				for (File file : archiveFiles) {
+					String path = file.getAbsolutePath();
+					path = path.replace(expandedArchivePath, installPath);
+					File installedFile = new File(path);
+					if (installedFile.isFile()) {
+						ContainerUtils.deleteFile(installedFile);
+					} else if (installedFile.isDirectory()) {
+						ContainerUtils.deleteDirectory(installedFile);
+					}
+				}
+			}
+
+			ContainerUtils.deleteDirectory(expandedArchive);
+		} else {
+			engineLogger.warning("Nothing to stop; Archive is not running:"
+					+ archiveName);
+		}
+		engineLogger.info("Exit archiveStop:" + archiveName);
+	}
+
+	@Override
+	public void archiveUndeploy(String archiveName, Properties properties)
+			throws Exception {
+
+		engineLogger.info("Enter archiveUndeploy:" + archiveName);
+
+		File expandedArchive = getExpandedArchive(archiveName);
+		if (expandedArchive.exists()) {
+			String forceUndeploy = null;
+			if (properties != null) {
+				forceUndeploy = properties.getProperty(FORCE_UNDEPLOY);
+			}
+
+			if (!Boolean.parseBoolean(forceUndeploy)) {
+				throw new Exception("Cannot undeploy archive " + archiveName
+						+ " because it is running (use property "
+						+ FORCE_UNDEPLOY + "=true to override).");
+			} else {
+				engineLogger
+						.warning("FORCE_UNDEPLOY=true, so stopping running archive:"
+								+ archiveName);
+				archiveStop(archiveName, "1", properties);
+			}
+		}
+
+		File file = new File(getArchiveDeployDir(), archiveName);
+		ContainerUtils.deleteFile(file);
+
+		engineLogger.info("Exit archiveUndeploy:" + archiveName);
+	}
+
+	private ArrayList<File> getRunningArchives() {
+		ArrayList<File> archiveList = new ArrayList<File>(2);
+
+		File folder = getArchiveDeployDir();
+		if (folder.isDirectory()) {
+			File[] listOfFiles = folder.listFiles();
+			if (listOfFiles != null) {
+				for (File file : listOfFiles) {
+					if (file.isFile()) {
+						File dir = new File(folder,
+								getSimpleArchiveName(file.getName()));
+						if (dir.isDirectory())
+							archiveList.add(file);
+					}
+				}
+			}
+		}
+
+		return archiveList;
+	}
+
+	@Override
+	public ArchiveDetail[] archiveDetect() throws Exception {
+		ArchiveDetail[] archiveDetail = null;
+
+		ArrayList<File> archiveList = getRunningArchives();
+
+		if (archiveList.size() > 0) {
+			archiveDetail = new ArchiveDetail[archiveList.size()];
+			for (int i = 0; i < archiveList.size(); i++) {
+				archiveDetail[i] = new ArchiveDetail(archiveList.get(i)
+						.getName(), true, false, "1");
+			}
+		}
+
+		return archiveDetail;
+	}
+
+	@Override
+	public String[] urlDetect() throws Exception {
+		return new String[] {};
+	}
+
+	@Override
+	public File getArchive(String archiveName) throws Exception {
+		File archive = new File(getArchiveDeployDir(), archiveName);
+		if (!archive.exists()) {
+			throw new Exception("Unable to provide archive " + archiveName
+					+ ", not found in deploy directory");
+		}
+		return archive;
+	}
 }
