@@ -1,4 +1,4 @@
-<containerConfig name="Apache Web Server 2.2.23 Container - version 1.0">
+<containerConfig name="Apache Web Server">
     
     <configFiles baseDir="${SERVER_RUNTIME_DIR}/conf" include="httpd.conf">
         <regex pattern='/usr/local/apache2' replacement='${SERVER_RUNTIME_DIR}'/>

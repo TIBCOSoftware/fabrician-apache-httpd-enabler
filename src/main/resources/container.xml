@@ -8,24 +8,23 @@
 	<import package="com.datasynapse.fabric.stats.provider" />
 	<import package="com.datasynapse.fabric.container.apache" />
 
-	<!-- <property name="targetConfigDir" value="${SERVER_RUNTIME_DIR}"/> -->
 	<property name="blocking" value="False" />
 	<property name="distributionVersion" value="${distro-version}" />
 	<property name="supportedDomainType" value="Apache Web Server" />
 	<property name="shutdownTimeout" value="120000" />
-	<property name="name" value="Apache Container" />
+	<property name="name" value="Apache Web Server Enabler" />
 	<property name="version" value="${project.version}" />
-	<property name="description" value="Container provide by DataSynapse for running Apache Web Server" />
+	<property name="description" value="Apache Web Server Enabler for Tibco Silver Fabric" />
 	<property name="modified" value="False" />
 
 	<unixcommand class="com.datasynapse.fabric.container.LifecycleCommand">
-		<property name="startupCommand" value="${CONTAINER_WORK_DIR}/container.sh start" />
-		<property name="shutdownCommand" value="${CONTAINER_WORK_DIR}/container.sh stop" />
+		<property name="startupCommand" value="${CONTAINER_WORK_DIR}/bin/container.sh start" />
+		<property name="shutdownCommand" value="${CONTAINER_WORK_DIR}/bin/container.sh stop" />
 	</unixcommand>
 
 	<windowscommand class="com.datasynapse.fabric.container.LifecycleCommand">
-		<property name="startupCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" start' />
-		<property name="shutdownCommand" value='"${CONTAINER_WORK_DIR}/container.cmd" stop' />
+		<property name="startupCommand" value='"${CONTAINER_WORK_DIR}/bin/container.cmd" start' />
+		<property name="shutdownCommand" value='"${CONTAINER_WORK_DIR}/bin/container.cmd" stop' />
 	</windowscommand>
 
 	<startCondition class="ApacheStartCondition">

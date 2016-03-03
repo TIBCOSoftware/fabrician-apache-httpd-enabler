@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grid-library>
-    <grid-library-name>apache-container</grid-library-name>
+    <grid-library-name>apache-enabler</grid-library-name>
     <grid-library-version>${project.version}</grid-library-version>
 
     <!-- No JRE arguments -->
